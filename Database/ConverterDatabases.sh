@@ -53,21 +53,21 @@ speakerforpasta=1
 			sed '/tcl/d' |
 			sed '/epi/d' |
 			sed '/q/d' > temporal.tmp
+			touch $line1"_sentence"$sentence
 			cat temporal.tmp | while read line4
 					do
-					ec=`echo $line4 | awk '{print $3}'` 
-					echo $ec
-					if [ "$ec" != "$u" ] && [  "$ec" != "sp" ]
+					phone=`echo $line4 | awk '{print $3}'` 
+					echo "este es el ultimo $lastphone"
+					echo primero $phone
+					if [ "$phone" = "$lastphone" ] && [  "$phone" = "sp" ]
 					then 
-					echo 'bindooooooooooooooooo'  
-		sleep 4s
-			fi
-			u= echo $ec	
-echo $u		
-			sleep 5s
-			
-			done
-			#cat temporal2.tmp
+					echo este es la linea $line4  
+					sleep 4s
+					fi
+					lastphone=`echo $phone`	
+					echo "este ese el que etntro $lastphone"		
+					echo salio
+					done
 			sleep 5s
                         echo "sentence number = $sentence";
                         sentence=`expr $sentence + 1`
