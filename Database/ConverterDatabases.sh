@@ -57,16 +57,15 @@ speakerforpasta=1
 			cat temporal.tmp | while read line4
 					do
 					phone=`echo $line4 | awk '{print $3}'` 
-					echo "este es el ultimo $lastphone"
-					echo primero $phone
+					echo "Ultimo phone armazenado$lastphone"
+					echo primero phone $phone
 					if [ "$phone" = "$lastphone" ] && [  "$phone" = "sp" ]
 					then 
-					echo este es la linea $line4  
+					echo linha de duplicada fr curta pausa apagada $line4  
 					sleep 4s
 					fi
 					lastphone=`echo $phone`	
-					echo "este ese el que etntro $lastphone"		
-					echo salio
+					echo "ultimo phone armazenado $lastphone"		
 					done
 			sleep 5s
                         echo "sentence number = $sentence";
