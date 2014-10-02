@@ -53,21 +53,24 @@ speakerforpasta=1
 			sed '/tcl/d' |
 			sed '/epi/d' |
 			sed '/q/d' > temporal.tmp
-			touch $line1"_sentence"$sentence
+			touch $line1"_sentence"$sentence.PHN
 			cat temporal.tmp | while read line4
 					do
 					phone=`echo $line4 | awk '{print $3}'` 
-					echo "Ultimo phone armazenado$lastphone"
-					echo primero phone $phone
+					#echo "Ultimo phone armazenado$lastphone"
+					#echo primero phone $phone
 					if [ "$phone" = "$lastphone" ] && [  "$phone" = "sp" ]
 					then 
-					echo linha de duplicada fr curta pausa apagada $line4  
+					echo linha de duplicada de curta pausa apagada $line4  
 					sleep 4s
+					else 
+					echo "$line4" >> $line1"_sentence"$sentence.PHN
 					fi
 					lastphone=`echo $phone`	
-					echo "ultimo phone armazenado $lastphone"		
+					#echo "ultimo phone armazenado $lastphone"		
 					done
-			sleep 5s
+			#sleep 5s
+			mv $line1"_sentence"$sentence.PHN $2/DatabaseComplet8KHz/Train/
                         echo "sentence number = $sentence";
                         sentence=`expr $sentence + 1`
                         done
@@ -75,7 +78,7 @@ speakerforpasta=1
 		echo "speaker number for data= $speakerforpasta"
 		speakerforpasta=`expr $speakerforpasta + 1`	
 		done 
-sleep 2s
+#sleep 2s
 echo "Final da conversão"
 done
 
