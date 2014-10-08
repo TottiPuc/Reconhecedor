@@ -1,6 +1,15 @@
 #! /bin/bash 
 
-###############  variavel Principal ######################
+################################################
+#==============================================#
+##### Christian Dayan Arcos Gordillo  ##########
+#####       Reconhecimento de voz      #########
+#####     christian@cetuc.puc-rio.br    ########
+#######       CETUC - PUC - RIO       ##########
+#==============================================#
+################################################
+
+###############   input variables   ######################
 baseFolderPath="$1"
 destinationFolderPath="$2"
 ##########################################################
@@ -8,9 +17,9 @@ destinationFolderPath="$2"
 echo "%%%%%%%%%%%%%%%%%%%%%%%%%%%%"
 echo "Transformando a formato .wav"
 echo "%%%%%%%%%%%%%%%%%%%%%%%%%%%%"
-ls $1/Train | while read line 
+ls $1 | while read line 
 do 
-DRdir="$1/Train/$line"
+DRdir="$1/$line"
 speakerforpasta=1
 		ls $DRdir | while read line1
 		do
@@ -28,14 +37,13 @@ speakerforpasta=1
 			################################################################
 			sox $line2 a.wav 
 			sox a.wav -r 8000 $line1"_sentence"$sentence.wav
-			mv $line1"_sentence"$sentence.wav $2/DatabaseComplet8KHz/Train/
-			ls $line2
-			echo "sentence number = $sentence";
+			mv $line1"_sentence"$sentence.wav $2
+			##ls $line2
+			#echo "sentence number = $sentence";
 			sentence=`expr $sentence + 1`
 			done
 			#########################  end1  ###############################
 			####################### starting2  #############################
-
                         ls $DRdir/$line1/*.PHN | while read line3
                         do
                         ################################################################
@@ -43,7 +51,7 @@ speakerforpasta=1
                         #########                                           ############
                         ################################################################
 
-                        ls $line3
+                        ##ls $line3
 			cat $line3 | 
 			sed 's/h#/sil/g' |    # replace header #
 			sed 's/#h/sil/g' |
@@ -80,7 +88,7 @@ speakerforpasta=1
 						if [ "$phone" = "$lastphone" ] && [  "$phone" = "sp" ]
 						then 
 						echo linha  duplicada de curta pausa apagada $line4  
-						sleep 4s
+						#sleep 4s
 						else 
 						echo "$line4" >> $line1"_sentence"$sentence.phn
 						fi
@@ -88,8 +96,8 @@ speakerforpasta=1
 					#echo "ultimo phone armazenado $lastphone"		
 					done
 			#sleep 5s
-			mv $line1"_sentence"$sentence.phn $2/DatabaseComplet8KHz/Train/
-                        echo "sentence number = $sentence";
+			mv $line1"_sentence"$sentence.phn $2
+                        ##echo "sentence number = $sentence";
                         sentence=`expr $sentence + 1`
                         done
 			
@@ -104,7 +112,7 @@ speakerforpasta=1
                         #########    files also replaces ''em' to '\'em'    ############
 			########## also convert all characters to lowercase   ##########
                         ################################################################			
-			ls $line5
+			#ls $line5
                         cat $line5 |
                         sed 's/[0-9]//g' |   # remove numbers 
                         sed 's/^ *//g' |     # remove whitespaces 
@@ -119,27 +127,34 @@ speakerforpasta=1
                         sed 's/\--//g' |    
                         sed 's/'\''em/\\'\''em/g' > temporal2.tmp    
 			
-                        mv temporal2.tmp  $2/DatabaseComplet8KHz/Train/$line1"_sentence"$sentence.stc
-                        echo "sentence number = $sentence";
+                        mv temporal2.tmp  $2/$line1"_sentence"$sentence.stc
+                        ##echo "sentence number = $sentence";
                         sentence=`expr $sentence + 1`
                         done
 
-		echo "speaker number for data= $speakerforpasta"
+                        ############################  end3  ##############################
+                        ##########################  starting4   ##########################
+
+                        ls $DRdir/$line1/*.WRD | while read line6
+                        do
+
+                        ################################################################
+                        ##################    opying files labeled    ##################
+                        ################################################################   
+
+			##echo $line6
+			cp $line6  $2/$line1"_sentence"$sentence.wrd
+                        ##echo "sentence number = $sentence";
+                        sentence=`expr $sentence + 1`
+			done
+			
+
+		##echo "speaker number for data= $speakerforpasta"
 		speakerforpasta=`expr $speakerforpasta + 1`	
 		done 
-#sleep 2s
-echo "Final da conversão"
+echo ".... Final conversion ...."
 done
 
-#sleep 2s
+echo "   ... removendo arquivos temporais ..."
+rm -rf *.wav *.phn *.tmp *phn *.stc *.wrd
 
-#find $1/Train -name "*.WAV" | while read line 
-#do
-
-#echo "processando arquivo $line"
-
-
-#done
-
-#echo "$1/Train"
-#echo "$2/DatabaseComplete8KHz/Train"
