@@ -3,7 +3,7 @@
 ################################################
 #==============================================#
 ##### Christian Dayan Arcos Gordillo  ##########
-#####       Reconhecimento de voz      #########
+#####         speech recognition       #########
 #####     christian@cetuc.puc-rio.br    ########
 #######       CETUC - PUC - RIO       ##########
 #==============================================#
@@ -17,19 +17,19 @@ Path_files=/home/christianlab/reconhecedor_CETUC/OriginalDataBase"$Database"/
 Out=/home/christianlab/reconhecedor_CETUC/productsDatabase/DatabaseAURORA/
 
 echo "."
-echo "copiando arquivos do banco original"
+echo "copying the original database files"
 echo "."
 
 cp -r $Path_files $Out
 
 echo "."
-echo "inicio converção de audios wv1 para wav"
+echo "start converting audios WV1 to wav"
 echo "."
 
 ./script_ConvertDatabase.sh $Out
 
 echo "."
-echo "fim do processo"
+echo "end of the process"
 echo "."
 
 

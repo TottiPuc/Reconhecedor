@@ -3,7 +3,7 @@
 ################################################
 #==============================================#
 ##### Christian Dayan Arcos Gordillo  ##########
-#####       Reconhecimento de voz      #########
+#####       speech recognition         #########
 #####     christian@cetuc.puc-rio.br    ########
 #######       CETUC - PUC - RIO       ##########
 #==============================================#
@@ -19,9 +19,9 @@ in=$1
 echo ""
 echo "#####################  WARNING# ###########################"
 echo "."
-echo    "  vai sobrescrever as pastas de treinamento e teste 
-                tem certeza disso?"
-echo "se vc tem certeza digite sim caso contrario pressione Enter"
+echo    "  you will overwrite the training and testing folders
+                 are you sure about that?"
+echo   " if u are sure type but otherwise press Enter"
 echo "."
 echo "###########################################################"
 echo ""
@@ -29,11 +29,10 @@ echo "Type Yes to continue or press Enter to exit: "
 
 if [ ! -d $in ]; then
 	echo "..erro.."
-	echo "...informe o diretorio com os audios..."
+	echo "...enter the directory with the database..."
 	echo ""
 	exit 999
 fi
-
 read digite
 if [ "$digite" == "$decision" ]; then
 
@@ -49,7 +48,7 @@ if [ "$digite" == "$decision" ]; then
 	if [ "$file" != "${file/\.wv1\.wav/.wav}" ];then
 		mv "$file" "${file/\.wv1\.wav/.wav}"
 	else
-		echo "Os áudios já tinham sido processados "
+		echo " the database had already been processed "
 	fi
 	done
 	find $in -name "*.wv1" | while read file
