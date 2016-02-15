@@ -1,6 +1,4 @@
 #!/bin/bash
-
-
 ################################################
 #==============================================#
 ##### Christian Dayan Arcos Gordillo  ##########
@@ -60,6 +58,11 @@ LBuild -C $LM/LanguageModelParameters -f TEXT -c 2 0 -c 3 0 -n 3 $LM/OOVWordMap 
 LNorm -f TEXT $LM/unigramsAux $LM/unigrams
 LNorm -f TEXT $LM/bigramsAux $LM/bigrams
 LNorm -f TEXT $LM/trigramsAux $LM/trigrams
+########################## For HTK Windows  ##################################################
+LNorm -f TEXT $LM/unigramsAux $LM/unigrams.txt
+LNorm -f TEXT $LM/bigramsAux $LM/bigrams.txt
+LNorm -f TEXT $LM/trigramsAux $LM/trigrams.txt
+
 
 ################################################################################################
 #######################   replace Replace strange characters   #################################
@@ -67,8 +70,15 @@ LNorm -f TEXT $LM/trigramsAux $LM/trigrams
 sed -i "s/'em/\\\'em/g" $LM/unigrams
 sed -i "s/'em/\\\'em/g" $LM/bigrams
 sed -i "s/'em/\\\'em/g" $LM/trigrams
+######################### For HTK Windows  ###################################################
+sed -i "s/'em/\\\'em/g" $LM/unigrams.txt
+sed -i "s/'em/\\\'em/g" $LM/bigrams.txt
+sed -i "s/'em/\\\'em/g" $LM/trigrams.txt
+
 
 ################################################################################################
+#####################  Build wordnets (not for trigrams, since they ar  ########################
+##################  supported only by HDecode, wich uses trigrams directly  ####################
 
 HBuild -T 0 -z -u '!!UNK' -s '!ENTER' '!EXIT' -n $LM/unigrams $LM/wordsOfDictionary $LM/wordNetUnigrams
 HBuild -T 0 -z -u '!!UNK' -s '!ENTER' '!EXIT' -n $LM/bigrams $LM/wordsOfDictionary $LM/wordNetBigrams
