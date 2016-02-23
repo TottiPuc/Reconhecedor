@@ -15,7 +15,7 @@ destinationFolderPath="$2"
 ##########################################################
 
 echo "%%%%%%%%%%%%%%%%%%%%%%%%%%%%"
-echo "Transformando a formato .wav"
+echo "transforming to format .wav .wav"
 echo "%%%%%%%%%%%%%%%%%%%%%%%%%%%%"
 ls $1 | while read line 
 do 
@@ -23,7 +23,7 @@ DRdir="$1/$line"
 speakerforpasta=1
 		ls $DRdir | while read line1
 		do
-		echo "processando $line1"
+		echo "procesing $line1"
 		echo "..."
 		sentence=0
 			#######################  starting1   ##########################
@@ -76,7 +76,7 @@ speakerforpasta=1
 			sed 's/ux/uw/g' |
 			sed 's/ax-h/ax/g'|
 			sed 's/pau/sil/g' > temporal.tmp
-			touch $line1"_sentence"$sentence.phn
+			touch $line1"_sentence"$sentence.phn.txt
 
 			###################   ignore duplicated short pause  ###########
 
@@ -87,16 +87,16 @@ speakerforpasta=1
 					#echo primero phone $phone
 						if [ "$phone" = "$lastphone" ] && [  "$phone" = "sp" ]
 						then 
-						echo linha  duplicada de curta pausa apagada $line4  
+						echo Duplicate line of short pause, deleted $line4  
 						#sleep 4s
 						else 
-						echo "$line4" >> $line1"_sentence"$sentence.phn
+						echo "$line4" >> $line1"_sentence"$sentence.phn.txt
 						fi
 					lastphone=`echo $phone`	
 					#echo "ultimo phone armazenado $lastphone"		
 					done
 			#sleep 5s
-			mv $line1"_sentence"$sentence.phn $2
+			mv $line1"_sentence"$sentence.phn.txt $2
                         ##echo "sentence number = $sentence";
                         sentence=`expr $sentence + 1`
                         done
@@ -127,7 +127,7 @@ speakerforpasta=1
                         sed 's/\--//g' |    
                         sed 's/'\''em/\\'\''em/g' > temporal2.tmp    
 			
-                        mv temporal2.tmp  $2/$line1"_sentence"$sentence.stc
+                        mv temporal2.tmp  $2/$line1"_sentence"$sentence.stc.txt
                         ##echo "sentence number = $sentence";
                         sentence=`expr $sentence + 1`
                         done
@@ -143,7 +143,7 @@ speakerforpasta=1
                         ################################################################   
 
 			##echo $line6
-			cp $line6  $2/$line1"_sentence"$sentence.wrd
+			cp $line6  $2/$line1"_sentence"$sentence.wrd.txt
                         ##echo "sentence number = $sentence";
                         sentence=`expr $sentence + 1`
 			done
@@ -152,9 +152,9 @@ speakerforpasta=1
 		##echo "speaker number for data= $speakerforpasta"
 		speakerforpasta=`expr $speakerforpasta + 1`	
 		done 
-echo ".... Final conversion ...."
+echo ".... end of conversion ...."
 done
 
-echo "   ... removendo arquivos temporais ..."
+echo "   ... deleting temporary files ..."
 rm -rf *.wav *.phn *.tmp *phn *.stc *.wrd
 

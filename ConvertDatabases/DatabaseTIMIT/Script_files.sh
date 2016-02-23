@@ -13,25 +13,25 @@
 nameDatabase="$1"
 Train_Teste="$2"
 ProductsDatabas="$3"
+Dictionary="$4"
 ###############################################################
 echo ""
 echo "###########################################################"
 echo "."
-echo "  Criando Pastas de treinamento, testes
-	e arquivos de configuração"
+echo " creating training , test and configuration files"
 echo "."
 echo "###########################################################"
 rm -rf $Train_Teste $ProductsDatabas
 mkdir -p  $Train_Teste $ProductsDatabas
 mkdir -p  $Train_Teste/Train $Train_Teste/Test $Train_Teste/Doc
 mkdir -p  $ProductsDatabas/Train/ $ProductsDatabas/Test/ $ProductsDatabas/smallTest/  
-#touch  $ProductsDatabas/monophones.txt $ProductsDatabas/dictionary.txt $ProductsDatabas/dictionary2.txt $ProductsDatabas/questions.txt $ProductsDatabas/sentences.txt
+touch  $Dictionary/monophones.txt $Dictionary/dictionary.txt $Dictionary/dictionary2.txt $Dictionary/questions.txt $Dictionary/sentences.txt
 clear
 echo "..."
-echo " Copinado arquivos dos bancos de dados originais"
+echo " copying backup files from the original databases"
 echo "..."
-cp ~/Documentos/OriginalDatabases/timitComplete/DOC/*  ~/reconhecedor_CETUC/OriginalDataBases$nameDatabase/Doc
-cp -r  ~/Documentos/OriginalDatabases/timitComplete/TEST/*  ~/reconhecedor_CETUC/OriginalDataBases$nameDatabase/Test
-cp -r ~/Documentos/OriginalDatabases/timitComplete/TRAIN/*  ~/reconhecedor_CETUC/OriginalDataBases$nameDatabase/Train
+cp ~/Documentos/OriginalDatabasesBackup/timitComplete/DOC/*  ~/reconhecedor_CETUC/OriginalDataBases$nameDatabase/Doc
+cp -r  ~/Documentos/OriginalDatabasesBackup/timitComplete/TEST/*  ~/reconhecedor_CETUC/OriginalDataBases$nameDatabase/Test
+cp -r ~/Documentos/OriginalDatabasesBackup/timitComplete/TRAIN/*  ~/reconhecedor_CETUC/OriginalDataBases$nameDatabase/Train
 echo""
 
