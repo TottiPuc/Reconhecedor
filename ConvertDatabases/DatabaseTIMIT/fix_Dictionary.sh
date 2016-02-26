@@ -38,14 +38,26 @@ echo ""
 echo "create new dictionary from phone transcriptions"
 echo ""
 
-cont=0
-ls $resultPath/DatabaseComplet8KHz/Train/*.phn.txt | while read phone
-do
-	cat $phone
-	cont=`expr $cont + 1`
-	echo "$cont"
-done
-#ls $resultPath/DatabaseComplet8KHz/Train/*.wrd.txt 
+#touch $resultPath/phones.tmp $resultPath/word.tmp
+
+
+ls $resultPath/DatabaseComplet8KHz/Train/*.phn.txt > $resultPath/phones.tmp
+ls $resultPath/DatabaseComplet8KHz/Train/*.wrd.txt > $resultPath/words.tmp
+
+
+#ls $resultPath/DatabaseComplet8KHz/Train/*.phn.txt | while read phone
+#do
+#	cat $phone | sed '/sil/d' | sed '/sp/d' >> $resultPath/phones.tmp
+#done 
+
+#ls $resultPath/DatabaseComplet8KHz/Train/*.wrd.txt | while read word
+#do
+#	cat $word >> $resultPath/word.tmp
+	
+#done
+##ls $resultPath/DatabaseComplet8KHz/Train/*.wrd.txt 
+
+./Creat_Dictionary2.py $resultPath/words.tmp $resultPath/phones.tmp $resultPath/dictionary2.tmp
 
 
 
