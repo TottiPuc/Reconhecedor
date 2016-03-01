@@ -13,6 +13,7 @@ clear
 
 nameDatabase="TIMIT"
 DictionaryPath=~/reconhecedor_CETUC/OriginalDataBases$nameDatabase/Doc/TIMITDIC.TXT
+SentencesPath=~/reconhecedor_CETUC/OriginalDataBases$nameDatabase/Doc/PROMPTS.TXT
 resultPath=~/reconhecedor_CETUC/productsDatabase/Database"$nameDatabase"
 
 cat $DictionaryPath | 
@@ -44,27 +45,47 @@ echo ""
 ls $resultPath/DatabaseComplet8KHz/Train/*.phn.txt > $resultPath/phones.tmp
 ls $resultPath/DatabaseComplet8KHz/Train/*.wrd.txt > $resultPath/words.tmp
 
-
-#ls $resultPath/DatabaseComplet8KHz/Train/*.phn.txt | while read phone
-#do
-#	cat $phone | sed '/sil/d' | sed '/sp/d' >> $resultPath/phones.tmp
-#done 
-
-#ls $resultPath/DatabaseComplet8KHz/Train/*.wrd.txt | while read word
-#do
-#	cat $word >> $resultPath/word.tmp
-	
-#done
-##ls $resultPath/DatabaseComplet8KHz/Train/*.wrd.txt 
-
 ./Creat_Dictionary2.py $resultPath/words.tmp $resultPath/phones.tmp $resultPath/dictionary2.tmp
 
+cat $resultPath/dictionary.txt | while read line
+do
+	echo $line >> $resultPath/dictionary2.tmp
+done 
+
+cat $resultPath/dictionary2.tmp | sed 's/  / /g'| sed 's/ /  /g' | sed "s/^'/\\\\'/g" |sort |uniq > $resultPath/dictionary2.txt
 
 
 
+echo ""
+echo "*** make monopones files (without short pauses) and questions file ***"
+echo ""
 
+touch $resultPath/monophones.txt $resultPath/questions.txt
+./create_phones_questions.sh
 
+echo ""
+echo "*** fix sentences list  ***"
+echo ""
 
+cat $SentencesPath |
+sed '/;/d' |
+sed 's/\.//g' |
+sed 's/\?//g' |
+sed 's/\://g' |
+sed 's/\;//g' |
+sed 's/\,//g' |
+sed 's/\"//g' |
+sed 's/\--//g' |
+sed "s/'em/\\\'em/g" |
+sed "s/(.*)//g" |
+sed "s/ *$//g" |
+tr [[:upper:]] [[:lower:]] > sentences.txt
+
+echo ""
+echo "*** remove all temporal files *.tmp  ***"
+echo ""
+
+rm -rf $resultPath/*.tmp
 
 
 
