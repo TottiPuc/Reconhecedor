@@ -9,7 +9,6 @@
 #==============================================#
 ################################################
 
-clear
 
 nameDatabase="TIMIT"
 DictionaryPath=~/reconhecedor_CETUC/OriginalDataBases$nameDatabase/Doc/TIMITDIC.TXT
@@ -79,7 +78,7 @@ sed 's/\--//g' |
 sed "s/'em/\\\'em/g" |
 sed "s/(.*)//g" |
 sed "s/ *$//g" |
-tr [[:upper:]] [[:lower:]] > sentences.txt
+tr [[:upper:]] [[:lower:]] > $resultPath/sentences.txt
 
 echo ""
 echo "*** remove all temporal files *.tmp  ***"

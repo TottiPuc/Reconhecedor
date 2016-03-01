@@ -58,18 +58,28 @@ echo "  ****** Creating a small-test folder  ***** "
 echo ""
 ./Script_Small_test.sh
 
-echo ""
-echo "  ****** Fixing dictionary  ***** "
-echo ""
-
-
-
+echo "database converted with sucesful"
+sleep 5s
 
 else
 echo""
 
-echo "... procedure performed successfully ..."
+echo "... database already converted ..."
+sleep 3s
 echo""
 fi 
+
+
+echo ""
+echo "  ****** make dictionary, monophones and question files  ***** "
+echo ""
+
+./fix_Dictionary.sh
+
+
+echo ""
+echo "  ****** the conversion process and creation of dictionaries has been finished  ***** "
+echo ""
+
 
 
