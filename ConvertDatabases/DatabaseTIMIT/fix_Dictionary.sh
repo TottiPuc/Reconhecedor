@@ -17,8 +17,10 @@ resultPath=~/reconhecedor_CETUC/productsDatabase/Database"$nameDatabase"
 
 cat $DictionaryPath | 
 sed '/;/d' |  
+sed "s/^'/\\\\'/g"|
+#sed "s/^'/\\\\\\\\\'/g"|
 sed -r '/bourgeois/ a bourgeoisie  b uh r zh w aa z iy'|
-sed -r '/line/ a lined  l ay n d'|
+sed -r '/^line/ a lined  l ay n d'|
 sed -r '/simmer/ a simmered  s ih m axr d'|
 sed -r '/teems/ a teeny  t iy n iy'|
 sed 's/\///g'|
