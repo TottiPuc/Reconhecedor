@@ -32,6 +32,13 @@ echo "."
 echo "end of the process"
 echo "."
 
+echo "."
+echo "creating database training"
+echo "."
+
+./database_train.sh
+
+
 
 
 

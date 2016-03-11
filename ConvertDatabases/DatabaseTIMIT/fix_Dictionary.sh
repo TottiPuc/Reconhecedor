@@ -82,11 +82,11 @@ sed "s/(.*)//g" |
 sed "s/ *$//g" |
 tr [[:upper:]] [[:lower:]] > $resultPath/sentences.txt
 
-echo ""
-echo "*** remove all temporal files *.tmp  ***"
-echo ""
+#echo ""
+#echo "*** remove all temporal files *.tmp  ***"
+#echo ""
 
-rm -rf $resultPath/*.tmp
+#rm -rf $resultPath/*.tmp
 
 
 

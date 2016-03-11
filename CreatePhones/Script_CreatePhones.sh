@@ -16,6 +16,7 @@ echo " *** Making a monophones0 nad monophones1 files (without and with short pa
 
 DB=/home/christianlab/reconhecedor_CETUC/productsDatabase/DatabaseTIMIT
 OUT=/home/christianlab/reconhecedor_CETUC/products/htk/phones
+OUTList=/home/christianlab/reconhecedor_CETUC/products/htk
 
 #****************************************************************************************#
 #************ make monophones0 and monophones1 files from monphones file  ***************#
@@ -39,6 +40,67 @@ touch $OUT/dictionaryForPhonesTest
 touch $OUT/grammarPhones
 
 ./createPhones.py $OUT/monophones0 $OUT/dictionaryForPhonesTest $OUT/grammarPhones
+
+HParse  $OUT/grammarPhones $OUT/wordNetPhones
+
+echo ""
+echo " *** Listing words of train/test sentences in MLF file ***"
+echo ""
+
+touch $OUTList/wordsInTrainSentences
+touch $OUTList/wordsInTestSentences
+touch $OUTList/TrainSentences
+
+echo "#!MLF!#" >> $OUTList/wordsInTrainSentences
+find $DB/DatabaseComplet8KHz/Train/ -name "*stc.txt" | while read line
+do
+nam=`ls $line | cut -d '/' -f 9`
+echo "\"*/$nam\"" >> $OUTList/wordsInTrainSentences
+cat $line | tr -s " " "\012" >> $OUTList/wordsInTrainSentences
+echo "." >> $OUTList/wordsInTrainSentences
+sen=`cat $line`
+echo "\"*/$nam\" $sen" >> $OUTList/TrainSentences
+done 
+
+# hacer lo mismo de arriba para los de test
+
+echo ""
+echo " *** listing phones of /train/test sentences in MFL file***"
+echo ""
+
+touch $OUT/dictionaryWithShortPause
+
+cat $DB/dictionary.txt | sed 's/$/ sp/g' >> $OUT/dictionaryWithShortPause
+echo "!ENTER sil" >> $OUT/dictionaryWithShortPause
+echo "!EXIT sil" >> $OUT/dictionaryWithShortPause
+
+echo ""
+echo " *** create a master label file manually, comparing phone and word file***"
+echo ""
+
+touch $OUT/phonesInTrainSentences0
+touch $OUT/phonesInTrainSentences1
+
+echo "#!MLF!#" >> $OUT/phonesInTrainSentences0
+echo "#!MLF!#" >> $OUT/phonesInTrainSentences1
+
+ls $DB/DatabaseComplet8KHz/Train/*.phn.txt > list1
+ls $DB/DatabaseComplet8KHz/Train/*.wrd.txt > list2
+
+cat list1 | while read line2
+do
+nom=`ls $line2 | cut -d '/' -f 9`
+echo "\"*/$nom\"" >> $OUTList/phonesInTrainSentences0
+echo "\"*/$nam\"" >> $OUTList/phonesInTrainSentences1
+
+done
+
+
+
+
+
+
+
 
 
 

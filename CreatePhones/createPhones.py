@@ -42,12 +42,14 @@ if __name__=="__main__":
                 fid1 = open (sys.argv[1], 'r')
                 fid2 = open (sys.argv[2], 'w')
                 fid3 = open (sys.argv[3], 'a') 
-                fid3.write('$Phone = ')
+                fid3.write('$phone = ')
 		lines = fid1.readlines()
                 i=0
                 for line in lines:
                         i+=1
                         splitfile(line,i)
+		fid3.write( ';\n')
+		fid3.write( '(sil <$phone> sil)\n')
                 fid1.close()
                 fid2.close()
                 fid3.close()
