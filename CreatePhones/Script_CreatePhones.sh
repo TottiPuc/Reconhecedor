@@ -10,7 +10,7 @@
 ################################################
 
 USE_CROSSWORD_TRIPHONE=0
-USE_PHONE_FILES_FOR_TRANSCRIPTION=1
+USE_PHONE_FILES_FOR_TRANSCRIPTION=0
 
 echo " *** Making a monophones0 nad monophones1 files (without and with short pauses)****"
 
@@ -78,23 +78,103 @@ echo ""
 echo " *** create a master label file manually, comparing phone and word file***"
 echo ""
 
-touch $OUT/phonesInTrainSentences0
-touch $OUT/phonesInTrainSentences1
+if [ $USE_PHONE_FILES_FOR_TRANSCRIPTION -eq 1 ]
+then
+touch $OUT/phonesInTrainSentences0.tmp
+touch $OUT/phonesInTrainSentences1.tmp
 
-echo "#!MLF!#" >> $OUT/phonesInTrainSentences0
-echo "#!MLF!#" >> $OUT/phonesInTrainSentences1
+echo "#!MLF!#" >> $OUT/phonesInTrainSentences0.tmp
+echo "#!MLF!#" >> $OUT/phonesInTrainSentences1.tmp
 
-ls $DB/DatabaseComplet8KHz/Train/*.phn.txt > list1
-ls $DB/DatabaseComplet8KHz/Train/*.wrd.txt > list2
+ls $DB/DatabaseComplet8KHz/Train/*.phn.txt > $OUT/list1.tmp
+ls $DB/DatabaseComplet8KHz/Train/*.wrd.txt > $OUT/list2.tmp
 
-cat list1 | while read line2
+cat $OUT/list1.tmp | while read line2
 do
 nom=`ls $line2 | cut -d '/' -f 9`
-echo "\"*/$nom\"" >> $OUTList/phonesInTrainSentences0
-echo "\"*/$nam\"" >> $OUTList/phonesInTrainSentences1
-
+echo "\"*/$nom\"" >> $OUT/phonesInTrainSentences0.tmp
+cat $line2 >> $OUT/phonesInTrainSentences0.tmp
+echo "." >> $OUT/phonesInTrainSentences0.tmp
+#echo "\"*/$nam\"" >> $OUTList/phonesInTrainSentences1
 done
 
+
+./createMasterLabels.py  $OUT/list2.tmp  $OUT/list1.tmp $OUT/phonesInTrainSentences1.tmp
+
+cat $OUT/phonesInTrainSentences1.tmp | sed 's/\/home\/christianlab\/reconhecedor_CETUC\/productsDatabase\/DatabaseTIMIT\/DatabaseComplet8KHz\/Train//g' > $OUT/phonesInTrainSentences1.txt
+
+echo "" >> $OUT/phonesInTrainSentences1.txt
+echo "" >> $OUT/phonesInTrainSentences0.tmp
+mv $OUT/phonesInTrainSentences0.tmp $OUT/phonesInTrainSentences0.txt
+
+else
+
+touch $OUT/phonesInSentencesConfiguration0
+touch $OUT/phonesInSentencesConfiguration1
+
+echo "EX" >> $OUT/phonesInSentencesConfiguration0
+echo "IS sil sil" >> $OUT/phonesInSentencesConfiguration0
+echo "DE sp" >> $OUT/phonesInSentencesConfiguration0
+
+echo "EX" >> $OUT/phonesInSentencesConfiguration1
+echo "IS sil sil" >> $OUT/phonesInSentencesConfiguration1
+
+HLEd -T 0 -X phn.txt -l '*' -d $OUT/dictionaryWithShortPause -i $OUT/phonesInTrainSentences0.tmp $OUT/phonesInSentencesConfiguration0 $OUTList/wordsInTrainSentences
+
+echo "" >> $OUT/phonesInTrainSentences0.tmp
+
+HLEd -T 0 -X phn.txt -l '*' -d $OUT/dictionaryWithShortPause -i $OUT/phonesInTrainSentences1.tmp $OUT/phonesInSentencesConfiguration1 $OUTList/wordsInTrainSentences
+
+echo "" >> $OUT/phonesInTrainSentences1.tmp
+
+#falta los fones de los archivos de test
+
+cat $OUT/phonesInTrainSentences0.tmp | sed 's/stc.phn.txt/phn.txt/g' > $OUT/phonesInTrainSentences0.txt
+cat $OUT/phonesInTrainSentences1.tmp | sed 's/stc.phn.txt/phn.txt/g' > $OUT/phonesInTrainSentences1.txt
+# igual falta los fones de los archivos de test
+
+fi
+
+# generating all posible triphonescombinations (and not only the ones in sentences)
+
+echo "*** Generating all popsible triphones ***"
+
+cp $OUT/monophones1 $OUT/triphonesAllCombinations
+
+./generateTriphones.py $OUT/monophones1 $OUT/triphonesAllCombinations
+
+touch $OUT/silenceConfiguration.txt
+
+echo "AT 2 4 0.2 {sil.transP}" >> $OUT/silenceConfiguration.txt
+echo "AT 4 2 0.2 {sil.transP}" >> $OUT/silenceConfiguration.txt
+echo "AT 1 3 0.3 {sp.transP}" >> $OUT/silenceConfiguration.txt
+echo "TI silst {sil.state[3],sp.state[2]}" >> $OUT/silenceConfiguration.txt
+
+touch $OUT/modelCloneForTriphoneConfiguration
+
+echo "CL $OUT/triphones1.txt" >> $OUT/modelCloneForTriphoneConfiguration
+
+./confSilence.py $OUT/monophones1 $OUT/modelCloneForTriphoneConfiguration
+
+touch $OUT/mergeSpSilConfiguration
+
+echo "ME sil sp sil" >> $OUT/mergeSpSilConfiguration
+echo "ME sil sil sil" >> $OUT/mergeSpSilConfiguration
+echo "ME sp sil sil" >> $OUT/mergeSpSilConfiguration
+
+touch  $OUT/triphoneConfiguration
+
+echo "WB sil" >> $OUT/triphoneConfiguration
+echo "WB sp" >> $OUT/triphoneConfiguration
+
+if [ $USE_CROSSWORD_TRIPHONE -eq 1 ]
+then
+echo "NB sp" >> $OUT/triphoneConfiguration
+fi
+
+echo "TC" >> $OUT/triphoneConfiguration
+
+rm -rf $OUT/*.tmp
 
 
 

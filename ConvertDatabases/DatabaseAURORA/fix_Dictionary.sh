@@ -11,31 +11,13 @@
 
 
 nameDatabase="AURORA"
-DictionaryPath=~/reconhecedor_CETUC/productsDatabase/Database$nameDatabase/ConvertDataBase$nameDatabase/CMU_dictionary/dictionary5knvp.txt
+DictionaryPath=~/reconhecedor_CETUC/productsDatabase/Database$nameDatabase/ConvertDataBase$nameDatabase/CMU_dictionary/dictionary.txt
 SentencesPath=~/reconhecedor_CETUC/productsDatabase/Database$nameDatabase/ConvertDataBase$nameDatabase/trainList.txt
 resultPath=~/reconhecedor_CETUC/productsDatabase/Database"$nameDatabase"
 
 cat $DictionaryPath | 
 tr -d "\r" |
 sed '/;/d' |  
-sed '/CLOSE-QUOTE/d' |
-sed '/END-OF-QUOTE/d' |
-sed '/END-QUOTE/d' |
-sed '/IN-QUOTES/d' |
-sed '/QUOTE/d' |
-sed '/UNQUOTE/d' |
-sed '/BEGIN-PARENS/d' |
-sed '/IN-PARENTHESES/d' |
-sed '/PAREN/d' |
-sed '/PARENS/d' |
-sed '/PARENTHESES/d' |
-sed '/CLOSE-PARENTHESES/d' |
-sed '/END-PAREN/d' |
-sed '/END-PARENS/d' |
-sed '/END-PARENTHESES/d' |
-sed '/END-THE-PAREN/d' |
-sed '/UN-PARENTHESES/d' |
-sed '/FULL-STOP/d' |
 sed "s/^'/\\\\'/g"|
 #sed "s/^'/\\\\\\\\\'/g"|
 sed -r '/simmer/ a simmered  s ih m axr d'|
@@ -43,18 +25,6 @@ sed 's/\///g'|
 sed 's/\.//g'|
 sed 's/1//g'|
 sed 's/2//g'|
-sed 's/!//g'|
-sed 's/"//g'|
-sed 's/#//g'|
-sed 's/%//g'|
-sed 's/&//g'|
-sed 's/)//g'|
-sed 's/(//g'|
-sed 's/,//g'|
-sed 's/://g'|
-sed 's/?//g'|
-sed 's/{//g'|
-sed 's/}//g'|
 sed 's/~n//g'|
 sed 's/~v_past//g'|
 sed 's/~v_pres//g'|
@@ -62,8 +32,7 @@ sed 's/~v//g'|
 sed 's/~adj//g'|
 sed 's/[1-9]//g'|
 sed 's/()//g' |
-sed -e '$a PHILIPPINES	F IH L IH P IY N Z'|
-tr [[:upper:]] [[:lower:]] > $resultPath/dic.tmp
+sed -e '$a PHILIPPINES   F IH L IH P IY N Z' > $resultPath/dic.tmp
 
 mv $resultPath/dic.tmp $resultPath/dictionary.txt
 
@@ -100,6 +69,7 @@ sed 's/\.//g' |
 sed 's/\?//g' |
 sed 's/{//g' |
 sed 's/}//g' |
+sed 's/!//g' |
 sed 's/%//g' |
 sed 's/&//g' |
 sed 's/\///g' |
@@ -113,11 +83,11 @@ sed "s/(*)*//g" |
 #sed "s/ *$//g" |
 tr [[:upper:]] [[:lower:]] > $resultPath/sentences.txt
 
-echo ""
-echo "*** remove all temporal files *.tmp  ***"
-echo ""
+#echo ""
+#echo "*** remove all temporal files *.tmp  ***"
+#echo ""
 
-rm -rf $resultPath/*.tmp
+#rm -rf $resultPath/*.tmp
 
 
 
