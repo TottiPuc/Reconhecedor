@@ -32,7 +32,8 @@ sed 's/~v//g'|
 sed 's/~adj//g'|
 sed 's/[1-9]//g'|
 sed 's/()//g' |
-sed -e '$a PHILIPPINES   F IH L IH P IY N Z' > $resultPath/dic.tmp
+sed -e '$a PHILIPPINES   F IH L IH P IY N Z' |
+sort | uniq > $resultPath/dic.tmp
 
 mv $resultPath/dic.tmp $resultPath/dictionary.txt
 
@@ -44,8 +45,8 @@ cat $resultPath/dictionary.txt > $resultPath/dictionary2.tmp
 cat $resultPath/dictionary.txt | sed 's/$/ sil/g' >> $resultPath/dictionary2.tmp
 cat $resultPath/dictionary.txt | sed 's/$/ sp/g' >> $resultPath/dictionary2.tmp
 
-echo "!SENT_START" >> $resultPath/dictionary2.tmp
-echo "!SENT_END" >> $resultPath/dictionary2.tmp
+#echo "!SENT_START" >> $resultPath/dictionary2.tmp
+#echo "!SENT_END" >> $resultPath/dictionary2.tmp
 
 
 cat $resultPath/dictionary2.tmp |sort |uniq > $resultPath/dictionary2.txt
@@ -64,7 +65,7 @@ echo "*** fix sentences list  ***"
 echo ""
 
 cat $SentencesPath |
-sed "s/...................................$//g"|
+sed "s/..................................$//g"|
 sed 's/\.//g' |
 sed 's/\?//g' |
 sed 's/{//g' |

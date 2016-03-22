@@ -15,7 +15,7 @@ USE_PHONE_FILES_FOR_TRANSCRIPTION=0
 echo " *** Making a monophones0 nad monophones1 files (without and with short pauses)****"
 
 DB=/home/christianlab/reconhecedor_CETUC/productsDatabase/DatabaseTIMIT
-OUT=/home/christianlab/reconhecedor_CETUC/products/htk/phones
+OUT=/home/christianlab/reconhecedor_CETUC/products/htk/phonesTIMIT
 OUTList=/home/christianlab/reconhecedor_CETUC/products/htk
 
 #****************************************************************************************#
@@ -47,19 +47,19 @@ echo ""
 echo " *** Listing words of train/test sentences in MLF file ***"
 echo ""
 
-touch $OUTList/wordsInTrainSentences
-touch $OUTList/wordsInTestSentences
-touch $OUTList/TrainSentences
+touch $OUTList/wordsInTrainSentencesTIMIT
+touch $OUTList/wordsInTestSentencesTIMIT
+touch $OUTList/TrainSentencesTIMIT
 
-echo "#!MLF!#" >> $OUTList/wordsInTrainSentences
+echo "#!MLF!#" >> $OUTList/wordsInTrainSentencesTIMIT
 find $DB/DatabaseComplet8KHz/Train/ -name "*stc.txt" | while read line
 do
 nam=`ls $line | cut -d '/' -f 9`
-echo "\"*/$nam\"" >> $OUTList/wordsInTrainSentences
-cat $line | tr -s " " "\012" >> $OUTList/wordsInTrainSentences
-echo "." >> $OUTList/wordsInTrainSentences
+echo "\"*/$nam\"" >> $OUTList/wordsInTrainSentencesTIMIT
+cat $line | tr -s " " "\012" >> $OUTList/wordsInTrainSentencesTIMIT
+echo "." >> $OUTList/wordsInTrainSentencesTIMIT
 sen=`cat $line`
-echo "\"*/$nam\" $sen" >> $OUTList/TrainSentences
+echo "\"*/$nam\" $sen" >> $OUTList/TrainSentencesTIMIT
 done 
 
 # hacer lo mismo de arriba para los de test
@@ -119,11 +119,11 @@ echo "DE sp" >> $OUT/phonesInSentencesConfiguration0
 echo "EX" >> $OUT/phonesInSentencesConfiguration1
 echo "IS sil sil" >> $OUT/phonesInSentencesConfiguration1
 
-HLEd -T 0 -X phn.txt -l '*' -d $OUT/dictionaryWithShortPause -i $OUT/phonesInTrainSentences0.tmp $OUT/phonesInSentencesConfiguration0 $OUTList/wordsInTrainSentences
+HLEd -T 0 -X phn.txt -l '*' -d $OUT/dictionaryWithShortPause -i $OUT/phonesInTrainSentences0.tmp $OUT/phonesInSentencesConfiguration0 $OUTList/wordsInTrainSentencesTIMIT
 
 echo "" >> $OUT/phonesInTrainSentences0.tmp
 
-HLEd -T 0 -X phn.txt -l '*' -d $OUT/dictionaryWithShortPause -i $OUT/phonesInTrainSentences1.tmp $OUT/phonesInSentencesConfiguration1 $OUTList/wordsInTrainSentences
+HLEd -T 0 -X phn.txt -l '*' -d $OUT/dictionaryWithShortPause -i $OUT/phonesInTrainSentences1.tmp $OUT/phonesInSentencesConfiguration1 $OUTList/wordsInTrainSentencesTIMIT
 
 echo "" >> $OUT/phonesInTrainSentences1.tmp
 

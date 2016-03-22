@@ -45,3 +45,30 @@ cat $TrainRaw/trainList.txt | grep $sentence > $pathTrainSource/Train/speaker"$s
 #sentence=`expr $sentence + 1`
 done
 
+find $pathTrainSource/Train/ -name ".txt" | while read line
+do
+cat $line |
+sed "s/...................................$//g"|
+sed 's/\.//g' |
+sed 's/\?//g' |
+sed 's/{//g' |
+sed 's/}//g' |
+sed 's/!//g' |
+sed 's/%//g' |
+sed 's/&//g' |
+sed 's/\///g' |
+sed 's/\://g' |
+sed 's/\;//g' |
+sed 's/\,//g' |
+sed 's/\"//g' |
+sed 's/\--//g' |
+sed "s/'em/\\\'em/g" |
+sed "s/(*)*//g" |
+tr [[:upper:]] [[:lower:]] > $pathTrainSource/Train/$line.stc.txt
+done
+
+
+
+
+
+
