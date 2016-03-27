@@ -28,16 +28,39 @@ touch  $LM/trigramsAux
 	echo "HMEM: STARTWORD = '!ENTER'" > $LM/LanguageModelParameters       
 	echo "HMEM: ENDWORD = '!EXIT'" >> $LM/LanguageModelParameters
 
+cat $DB/sentencesLMTrain |
+sed 's/\.//g' |
+sed 's/\?//g' |
+sed 's/{//g' |
+sed 's/}//g' |
+sed 's/!//g' |
+sed 's/%//g' |
+sed 's/&//g' |
+sed 's/\$//g' |
+sed 's/\///g' |
+sed 's/\://g' |
+sed 's/\;//g' |
+sed 's/\,//g' |
+sed 's/\"//g' |
+sed 's/\--//g' |
+sed 's/*//g' |
+sed 's/\\//g' |
+sed 's/[0-9]//g' |
+sed "s/'til/\\\'til/g" |
+sed "s/'cause/\\\'cause/g" |
+sed "s/'n/\\\'n/g" |
+sed "s/'em/\\\'em/g" > $DB/sentencesLM.txt
+
 
 LNewMap -f WFC Sentences $LM/emptyLanguageModel
 
-LGPrep -C  $LM/LanguageModelParameters -a 1000000 -b 2000000 -n 3 -s "Language Model" -d $LM/ -w $LM/wordMap $LM/emptyLanguageModel $DB/sentences.txt
+LGPrep -C  $LM/LanguageModelParameters -a 1000000 -b 2000000 -n 3 -s "Language Model" -d $LM/ -w $LM/wordMap $LM/emptyLanguageModel $DB/sentencesLM.txt
 
 #LGList $LM/wordMap $LM/gram.0 | more
 
-LGCopy -C $LM/LanguageModelParameters -b 2000000 -d $LM/ $LM/wordMap $LM/gram.0
+LGCopy -C $LM/LanguageModelParameters -b 2000000 -d $LM/ $LM/wordMap $LM/gram.*
 
-cat $DB/dictionary.txt  | cut -f 1 | tr [[:upper:]] [[:lower:]] >> $LM/wordsOfDictionary 
+cat $DB/dic5k.txt | tr [[:upper:]] [[:lower:]] >> $LM/wordsOfDictionary 
 echo "!ENTER" >> $LM/wordsOfDictionary 
 echo "!EXIT" >> $LM/wordsOfDictionary
 
@@ -47,9 +70,9 @@ LSubset -T 1 -a 1000000 -C $LM/LanguageModelParameters $LM/wordMap $LM/wordsOfDi
 #################   Build language models: unigrams, bigrams and trigrams  #####################
 
 
-LBuild -C $LM/LanguageModelParameters -f TEXT -n 1 $LM/OOVWordMap $LM/unigramsAux $LM/data.0
-LBuild -C $LM/LanguageModelParameters -f TEXT -c 2 0 -n 2 $LM/OOVWordMap $LM/bigramsAux $LM/data.0
-LBuild -C $LM/LanguageModelParameters -f TEXT -c 2 0 -c 3 0 -n 3 $LM/OOVWordMap $LM/trigramsAux $LM/data.0
+LBuild -C $LM/LanguageModelParameters -f TEXT -n 1 $LM/OOVWordMap $LM/unigramsAux $LM/data.*
+LBuild -C $LM/LanguageModelParameters -f TEXT -c 2 0 -n 2 $LM/OOVWordMap $LM/bigramsAux $LM/data.*
+LBuild -C $LM/LanguageModelParameters -f TEXT -c 2 0 -c 3 0 -n 3 $LM/OOVWordMap $LM/trigramsAux $LM/data.*
 
 LNorm -f TEXT $LM/unigramsAux $LM/unigrams
 LNorm -f TEXT $LM/bigramsAux $LM/bigrams

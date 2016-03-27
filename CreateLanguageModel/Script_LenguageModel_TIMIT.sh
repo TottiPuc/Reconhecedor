@@ -11,7 +11,7 @@
 
 
 echo " .. Creating Language Model .. "
-LM=~/reconhecedor_CETUC/products/htk/languageModel
+LM=~/reconhecedor_CETUC/products/htk/languageModel/TIMIT
 DB=~/reconhecedor_CETUC/productsDatabase/DatabaseTIMIT
 mkdir -p  $LM
 touch  $LM/LanguageModelParameters
@@ -27,13 +27,6 @@ touch  $LM/trigramsAux
 	echo "HMEM: STARTWORD = '!ENTER'" > $LM/LanguageModelParameters       
 	echo "HMEM: ENDWORD = '!EXIT'" >> $LM/LanguageModelParameters
 
-#touch $LM/emptyLanguageModel
-#	echo "Name  	= Sentences" > $LM/emptyLanguageModel
-#	echo "SeqNo	= 0" >> $LM/emptyLanguageModel
-#	echo "Entries	= 0" >> $LM/emptyLanguageModel
-#	echo "EscMode	= RAW" >> $LM/emptyLanguageModel
-#	echo "Fields	= ID,WFC" >> $LM/emptyLanguageModel
-#	echo "\Words\ "  >> $LM/emptyLanguageModel
 
 LNewMap -f WFC Sentences $LM/emptyLanguageModel
 

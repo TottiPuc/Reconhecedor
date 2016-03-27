@@ -50,7 +50,9 @@ echo ""
 touch $OUTList/wordsInTrainSentencesTIMIT
 touch $OUTList/wordsInTestSentencesTIMIT
 touch $OUTList/TrainSentencesTIMIT
+touch $OUTList/TestSentencesTIMIT
 
+#train
 echo "#!MLF!#" >> $OUTList/wordsInTrainSentencesTIMIT
 find $DB/DatabaseComplet8KHz/Train/ -name "*stc.txt" | while read line
 do
@@ -62,7 +64,18 @@ sen=`cat $line`
 echo "\"*/$nam\" $sen" >> $OUTList/TrainSentencesTIMIT
 done 
 
-# hacer lo mismo de arriba para los de test
+#test
+echo "#!MLF!#" >> $OUTList/wordsInTestSentencesTIMIT
+find $DB/DatabaseComplet8KHz/Test/ -name "*stc.txt" | while read line
+do
+nam=`ls $line | cut -d '/' -f 9`
+echo "\"*/$nam\"" >> $OUTList/wordsInTestSentencesTIMIT
+cat $line | tr -s " " "\012" >> $OUTList/wordsInTestSentencesTIMIT
+echo "." >> $OUTList/wordsInTestSentencesTIMIT
+sen=`cat $line`
+echo "\"*/$nam\" $sen" >> $OUTList/TestSentencesTIMIT
+done
+
 
 echo ""
 echo " *** listing phones of /train/test sentences in MFL file***"
@@ -127,11 +140,15 @@ HLEd -T 0 -X phn.txt -l '*' -d $OUT/dictionaryWithShortPause -i $OUT/phonesInTra
 
 echo "" >> $OUT/phonesInTrainSentences1.tmp
 
-#falta los fones de los archivos de test
+HLEd -T 0 -X phn.txt -l '*' -d $OUT/dictionaryWithShortPause -i $OUT/phonesInTestSentences0.tmp $OUT/phonesInSentencesConfiguration0 $OUTList/wordsInTestSentencesTIMIT
+
+echo "" >> $OUT/phonesInTestSentences0.tmp
+
 
 cat $OUT/phonesInTrainSentences0.tmp | sed 's/stc.phn.txt/phn.txt/g' > $OUT/phonesInTrainSentences0.txt
 cat $OUT/phonesInTrainSentences1.tmp | sed 's/stc.phn.txt/phn.txt/g' > $OUT/phonesInTrainSentences1.txt
-# igual falta los fones de los archivos de test
+cat $OUT/phonesInTestSentences0.tmp | sed 's/stc.phn.txt/phn.txt/g' > $OUT/phonesInTestSentences0.txt
+
 
 fi
 
