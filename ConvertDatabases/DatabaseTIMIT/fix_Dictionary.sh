@@ -14,6 +14,7 @@ nameDatabase="TIMIT"
 DictionaryPath=~/reconhecedor_CETUC/OriginalDataBases$nameDatabase/Doc/TIMITDIC.TXT
 SentencesPath=~/reconhecedor_CETUC/OriginalDataBases$nameDatabase/Doc/PROMPTS.TXT
 resultPath=~/reconhecedor_CETUC/productsDatabase/Database"$nameDatabase"
+sour=/home/christianlab/Documentos/Scripts_Reconhecedor/ConvertDatabases/DatabaseTIMIT
 
 cat $DictionaryPath | 
 sed '/;/d' |  
@@ -46,7 +47,7 @@ echo ""
 ls $resultPath/DatabaseComplet8KHz/Train/*.phn.txt > $resultPath/phones.tmp
 ls $resultPath/DatabaseComplet8KHz/Train/*.wrd.txt > $resultPath/words.tmp
 
-./Creat_Dictionary2.py $resultPath/words.tmp $resultPath/phones.tmp $resultPath/dictionary2.tmp
+$sour/Creat_Dictionary2.py $resultPath/words.tmp $resultPath/phones.tmp $resultPath/dictionary2.tmp
 
 cat $resultPath/dictionary.txt | while read line
 do
@@ -62,7 +63,7 @@ echo "*** make monopones files (without short pauses) and questions file ***"
 echo ""
 
 touch $resultPath/monophones.txt $resultPath/questions.txt
-./create_phones_questions.sh
+sh $sour/create_phones_questions.sh
 
 echo ""
 echo "*** fix sentences list  ***"

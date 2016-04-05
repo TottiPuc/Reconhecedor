@@ -9,10 +9,12 @@
 #==============================================#
 ################################################
 
+clear
 
 echo " .. Creating Language Model .. "
 LM=~/reconhecedor_CETUC/products/htk/languageModel/TIMIT
 DB=~/reconhecedor_CETUC/productsDatabase/DatabaseTIMIT
+sour=/home/christianlab/Documentos/Scripts_Reconhecedor/CreateLanguageModel
 mkdir -p  $LM
 touch  $LM/LanguageModelParameters
 touch  $LM/wordMap
@@ -36,7 +38,7 @@ LGPrep -C  $LM/LanguageModelParameters -a 1000000 -b 2000000 -n 3 -s "Language M
 
 LGCopy -C $LM/LanguageModelParameters -b 2000000 -d $LM/ $LM/wordMap $LM/gram.0
 
-./separateDictionary.py $DB/dictionary.txt $LM/wordsOfDictionary 
+$sour/separateDictionary.py $DB/dictionary.txt $LM/wordsOfDictionary 
 
 LSubset -a 10000 -C $LM/LanguageModelParameters $LM/wordMap $LM/wordsOfDictionary $LM/OOVWordMap
 

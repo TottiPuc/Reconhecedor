@@ -16,6 +16,7 @@ Database="TIMIT"
 Path_files=~/reconhecedor_CETUC/OriginalDataBases"$Database"
 PathProducts=~/reconhecedor_CETUC/productsDatabase/Database"$Database"/DatabaseComplet8KHz
 PathDictionary=~/reconhecedor_CETUC/productsDatabase/Database"$Database"
+sour=/home/christianlab/Documentos/Scripts_Reconhecedor/ConvertDatabases/DatabaseTIMIT
 decision="y"
 ##########################################################
 
@@ -36,19 +37,19 @@ read digite
 if [ "$digite" == "$decision" ]; then
 
 
-./Script_files.sh $Database $Path_files $PathProducts $PathDictionary
+sh $sour/Script_files.sh $Database $Path_files $PathProducts $PathDictionary
 
 sleep 10s
 
 echo "  ****** Converting Train Folder ***** "
 echo ""     
-./ConverterDatabases.sh $Path_files/Train $PathProducts/Train
+sh $sour/ConverterDatabases.sh $Path_files/Train $PathProducts/Train
 echo ""
 echo ""
 #sleep 2s
 echo "  ****** Converting Test Folder  ***** "
 echo ""
-./ConverterDatabases.sh $Path_files/Test $PathProducts/Test
+sh $sour/ConverterDatabases.sh $Path_files/Test $PathProducts/Test
 
 echo ""
 echo ""
@@ -56,7 +57,7 @@ echo ""
 echo "  ****** Copy some test samples to another folder, so we can make fast tests  ***** "
 echo "  ****** Creating a small-test folder  ***** "
 echo ""
-./Script_Small_test.sh
+sh $sour/Script_Small_test.sh
 
 echo "database converted with sucesful"
 sleep 5s
@@ -74,7 +75,7 @@ echo ""
 echo "  ****** make dictionary, monophones and question files  ***** "
 echo ""
 
-./fix_Dictionary.sh
+sh $sour/fix_Dictionary.sh
 
 
 echo ""
@@ -82,4 +83,4 @@ echo "  ****** the conversion process and creation of dictionaries has been fini
 echo ""
 
 
-
+rm -f $PathDictionary/*.tmp
