@@ -19,7 +19,7 @@ if [ -d $pathTrainSource ]; then
 fi
 
 #sentence=1
-mkdir -p $pathTrainSource/Train $pathTrainSource/Test
+mkdir -p $pathTrainSource/Train 
 
 # delete sentences adaptatives
 find /home/christianlab/reconhecedor_CETUC/productsDatabase/DatabaseAURORA/ConvertDataBaseAURORA/promp_train_si_tr_s/ -name *.ptx  | sed '/a0100/d' | while read line
@@ -34,21 +34,20 @@ fgrep -f $TrainRaw/list.tmp $TrainRaw/promptx.tmp > $TrainRaw/trainList.tmp
 cat $TrainRaw/trainList.tmp | sed 's/exisiting/existing/g' > $TrainRaw/trainList.txt
 
 
-
 cat $pathTrainFile |sed '/;/d'| sed 's/wv1/wav/g' | sed '/11_2_1:wsj0\/si_tr_s\/401\//d'| sed 's/_/-/' | sed 's/_/\./' | sed 's/:/\//' | sed "s|^|$TrainFiles|g" | while read line
 do
 speaker=`echo $line | cut -d "/" -f 12` 
 sentence=`echo $line | cut -d "/" -f 13 | sed 's/.wav//g'`
-#echo "sentence"$sentence"_speaker"$speaker".wav"
-sox $line -r 8000 $pathTrainSource/Train/speaker"$speaker"_sentence"$sentence".wav
+#sox $line -r 8000 $pathTrainSource/Train/speaker"$speaker"_sentence"$sentence".wav   # se for convertir pra 8kz desde o começo tire o # dessa linha e comente a seguinte
+mv $line $pathTrainSource/Train/speaker"$speaker"_sentence"$sentence".wav   # se for convertir pra 8kz desde o começo comente essa linha e descomente a linha de emcima
 cat $TrainRaw/trainList.txt | grep $sentence > $pathTrainSource/Train/speaker"$speaker"_sentence"$sentence".txt
 #sentence=`expr $sentence + 1`
 done
 
 find $pathTrainSource/Train/ -name ".txt" | while read line
 do
-cat $line |
-sed "s/...................................$//g"|
+cat $line | awk '{ $(NF)=""; print }' | awk '{ $(NF)=""; print }'|
+#sed "s/...................................$//g"|
 sed 's/\.//g' |
 sed 's/\?//g' |
 sed 's/{//g' |
