@@ -25,9 +25,9 @@ if [ "$opcion" == "$decision" ]; then
 echo "."
 echo "copying the original database files"
 echo "."
-#cp -r $Path_files $Out
-#rm -r $Out/ConvertDataBaseAURORA/
-#mv $Out/OriginalDataBaseAURORA/ $Out/ConvertDataBaseAURORA/
+cp -r $Path_files $Out
+rm -r $Out/ConvertDataBaseAURORA/
+mv $Out/OriginalDataBaseAURORA/ $Out/ConvertDataBaseAURORA/
 sleep 10
 echo "."
 echo "start converting audios WV1 to wav"
@@ -41,17 +41,20 @@ echo "."
 fi
 
 echo "."
-echo "creating database training"
+echo "creating sentences from database training "
 echo "."
 sleep 10
-#./database_train.sh
+
+./database_train.sh
 
 echo "."
-echo "creating database test"
+echo "creating sentences from database test"
 echo "."
 
-#./database_test.sh
+./database_test.sh
 
+echo "."
+echo "creating dictionary, monophones and fixing sentences for training"
+echo "."
 
-
-
+./fix_Dictionary.sh

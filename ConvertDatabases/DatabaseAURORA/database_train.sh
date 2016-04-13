@@ -16,9 +16,10 @@ TrainRaw=~/reconhecedor_CETUC/productsDatabase/DatabaseAURORA/ConvertDataBaseAUR
 
 if [ -d $pathTrainSource ]; then
 	rm -r $pathTrainSource
+	rm -r $TrainRaw/list.tmp $TrainRaw/promptx.tmp $TrainRaw/trainList.tmp $TrainRaw/trainList.txt
 fi
 
-#sentence=1
+##sentence=1
 mkdir -p $pathTrainSource/Train 
 
 # delete sentences adaptatives
@@ -39,13 +40,14 @@ do
 speaker=`echo $line | cut -d "/" -f 12` 
 sentence=`echo $line | cut -d "/" -f 13 | sed 's/.wav//g'`
 #sox $line -r 8000 $pathTrainSource/Train/speaker"$speaker"_sentence"$sentence".wav   # se for convertir pra 8kz desde o começo tire o # dessa linha e comente a seguinte
-mv $line $pathTrainSource/Train/speaker"$speaker"_sentence"$sentence".wav   # se for convertir pra 8kz desde o começo comente essa linha e descomente a linha de emcima
+cp $line $pathTrainSource/Train/speaker"$speaker"_sentence"$sentence".wav   # se for convertir pra 8kz desde o começo comente essa linha e descomente a linha de emcima
 cat $TrainRaw/trainList.txt | grep $sentence > $pathTrainSource/Train/speaker"$speaker"_sentence"$sentence".txt
 #sentence=`expr $sentence + 1`
 done
 
-find $pathTrainSource/Train/ -name ".txt" | while read line
+find $pathTrainSource/Train/ -name "*.txt" | while read line
 do
+sen=`echo $line | cut -d "/" -f 9 | sed 's/.txt//g'`
 cat $line | awk '{ $(NF)=""; print }' | awk '{ $(NF)=""; print }'|
 #sed "s/...................................$//g"|
 sed 's/\.//g' |
@@ -61,9 +63,24 @@ sed 's/\;//g' |
 sed 's/\,//g' |
 sed 's/\"//g' |
 sed 's/\--//g' |
+sed 's/\-/ /g' |
+tr [[:upper:]] [[:lower:]] |
 sed "s/'em/\\\'em/g" |
-sed "s/(*)*//g" |
-tr [[:upper:]] [[:lower:]] > $pathTrainSource/Train/$line.stc.txt
+sed "s/'a'/a/g" |
+sed "s/'chemical'/chemical/g" |
+sed "s/'come/come/g" |
+sed "s/settle'/settle/g" |
+sed "s/'eighty/eighty/g" |
+sed "s/'presented'/presented/g" |
+sed "s/'single/single/g" |
+sed "s/'the/the/g" |
+sed "s/man'/man/g" |
+sed "s/'what's/what's/g" |
+sed "s/stuff'/stuff/g" |
+sed "s/'up'/up/g" |
+sed "s/'yeah/yeah/g" |
+sed "s/wrong'/wrong/g" |
+sed "s/(*)*//g"  > $pathTrainSource/Train/$sen.stc.txt
 done
 
 

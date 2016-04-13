@@ -17,116 +17,121 @@ DB=/home/christianlab/reconhecedor_CETUC/productsDatabase/DatabaseAURORA
 OUT=/home/christianlab/reconhecedor_CETUC/products/htk/phonesAURORA
 OUTList=/home/christianlab/reconhecedor_CETUC/products/htk
 
+rm -f $OUT/*.txt $OUTList/wordsInTrainSentencesAURORA.txt  $OUTList/wordsInTestSentencesAURORA.txt  $OUTList/TrainSentencesAURORA.txt $OUTList/TestSentencesAURORA.txt
+
+
 #****************************************************************************************#
 #************ make monophones0 and monophones1 files from monphones file  ***************#
 
-#cp $DB/monophones.txt $OUT/monophones0.tmp
-#cp $DB/monophones.txt $OUT/monophones1.tmp
+cp $DB/monophones.txt $OUT/monophones0.tmp
+cp $DB/monophones.txt $OUT/monophones1.tmp
 
-#cat $OUT/monophones0.tmp | tr -d "\r" > $OUT/monophones0
-#cat $OUT/monophones1.tmp | tr -d "\r" > $OUT/monophones1
+cat $OUT/monophones0.tmp | tr -d "\r" > $OUT/monophones0.txt
+cat $OUT/monophones1.tmp | tr -d "\r" > $OUT/monophones1.txt
 
-#rm -rf $OUT/monophones0.tmp $OUT/monophones1.tmp
+rm -f $OUT/monophones0.tmp $OUT/monophones1.tmp
 
-#echo "sil" >> $OUT/monophones0
-#echo "sil" >> $OUT/monophones1
-#echo "sp" >> $OUT/monophones1
+echo "sil" >> $OUT/monophones0.txt
+echo "sil" >> $OUT/monophones1.txt
+echo "sp" >> $OUT/monophones1.txt
 
 #****************************************************************************************#
 #************  prepare special dictionary and wordnet for monophone test  ***************#
 
-#touch $OUT/dictionaryForPhonesTest
-#touch $OUT/grammarPhones
+touch $OUT/dictionaryForPhonesTest.txt
+touch $OUT/grammarPhones.txt
 
-#./createPhones.py $OUT/monophones0 $OUT/dictionaryForPhonesTest $OUT/grammarPhones
+./createPhones.py $OUT/monophones0.txt $OUT/dictionaryForPhonesTest.txt $OUT/grammarPhones.txt
 
-#HParse $OUT/grammarPhones $OUT/wordNetPhones
+HParse $OUT/grammarPhones.txt $OUT/wordNetPhones.txt
 
-#echo ""
-#echo " *** Listing words of train/test sentences in MLF file ***"
-#echo ""
+echo ""
+echo " *** Listing words of train/test sentences in MLF file ***"
+echo ""
 
-#touch $OUTList/wordsInTrainSentencesAURORA
-#touch $OUTList/wordsInTestSentencesAURORA
-#touch $OUTList/TrainSentencesAURORA
+touch $OUTList/wordsInTrainSentencesAURORA.tmp
+touch $OUTList/wordsInTestSentencesAURORA.tmp
+touch $OUTList/TrainSentencesAURORA.txt
 
 
-#echo "#!MLF!#" >> $OUTList/wordsInTrainSentencesAURORA
-#find $DB/DatabaseComplete8kHz/Train/ -name "*.txt" | while read line
-#do
-#nam=`ls $line | cut -d '/' -f 9`
-#cat $line |
-#sed "s/..................................$//g"|
-#sed 's/\.//g' |
-#sed 's/\?//g' |
-#sed 's/{//g' |
-#sed 's/}//g' |
-#sed 's/!//g' |
-#sed 's/%//g' |
-#sed 's/&//g' |
-#sed 's/\///g' |
-#sed 's/\://g' |
-#sed 's/\;//g' |
-#sed 's/\,//g' |
-#sed 's/\"//g' |
-#sed 's/\--//g' |
-#sed "s/'em/\\\'em/g" |
-#sed "s/(*)*//g" |
-#tr [[:upper:]] [[:lower:]] >> $DB/DatabaseComplete8kHz/Train/$nam".tmp"
+echo "#!MLF!#" >> $OUTList/wordsInTrainSentencesAURORA.tmp
+find $DB/DatabaseComplete8kHz/Train/ -name "*stc.txt" | while read line
+do
+nam=`ls $line | cut -d '/' -f 9`
+echo "\"*/$nam\"" >> $OUTList/wordsInTrainSentencesAURORA.tmp
+cat $line | tr -s " " "\012"  >> $OUTList/wordsInTrainSentencesAURORA.tmp
+echo "." >> $OUTList/wordsInTrainSentencesAURORA.tmp
+sen=`cat $line`
+echo "\"*/$nam\" $sen" >> $OUTList/TrainSentencesAURORA.txt
+done
+cat $OUTList/wordsInTrainSentencesAURORA.tmp | tr -d "\r" | sed '/./!d' > $OUTList/wordsInTrainSentencesAURORA.txt   #delet character ascii
 
-#echo "\"*/$nam\"" >> $OUTList/wordsInTrainSentencesAURORA
-#cat $DB/DatabaseComplete8kHz/Train/$nam".tmp" | tr -s " " "\012" | sed "s/^'/\\\'/g" | sed 's/^"/\\\"/g' >> $OUTList/wordsInTrainSentencesAURORA
-#echo "." >> $OUTList/wordsInTrainSentencesAURORA
-#sen=`cat $DB/DatabaseComplete8kHz/Train/$nam".tmp"`
-#echo "\"*/$nam\" $sen" >> $OUTList/TrainSentencesAURORA
-#done
-####
-# hacer lo mismo de arriba para los de test
+##test
 
-#echo ""
-#echo " *** listing phones of /train/test sentences in MFL file***"
-#echo ""
+echo "#!MLF!#" >> $OUTList/wordsInTestSentencesAURORA.tmp
+find $DB/DatabaseComplete8kHz/Test/ -name "*stc.txt" | while read line
+do
+nam=`ls $line | cut -d '/' -f 9`
+echo "\"*/$nam\"" >> $OUTList/wordsInTestSentencesAURORA.tmp
+cat $line | tr -s " " "\012"  >> $OUTList/wordsInTestSentencesAURORA.tmp
+echo "." >> $OUTList/wordsInTestSentencesAURORA.tmp
+sen=`cat $line`
+echo "\"*/$nam\" $sen" >> $OUTList/TestSentencesAURORA.txt
+done
+cat $OUTList/wordsInTestSentencesAURORA.tmp | tr -d "\r" | sed '/./!d' > $OUTList/wordsInTestSentencesAURORA.txt   #delet character ascii
 
-#touch $OUT/dictionaryWithShortPause.tmp
+rm -f $OUTList/wordsInTestSentencesAURORA.tmp $OUTList/wordsInTrainSentencesAURORA.tmp
 
-#cat $DB/dictionary.txt | tr [[:upper:]] [[:lower:]] |sed 's/$/ sp/g' >> $OUT/dictionaryWithShortPause.tmp
-#echo "!ENTER sil" >> $OUT/dictionaryWithShortPause.tmp
-#echo "!EXIT sil" >> $OUT/dictionaryWithShortPause.tmp
+echo ""
+echo " *** listing phones of /train/test sentences in MFL file***"
+echo ""
 
-#cat $OUT/dictionaryWithShortPause.tmp | sed 's/\t/  /g' > $OUT/dictionaryWithShortPause 
+touch $OUT/dictionaryWithShortPause.txt
+./dicAcusticModelAurora.sh
+cat $OUT/dictionaryAM.txt | sed 's/$/ sp/g' >> $OUT/dictionaryWithShortPause.txt
 
-#echo ""
-#echo " *** create a master label file manually, comparing phone and word file***"
-#echo ""
+echo "!ENTER sil" >> $OUT/dictionaryWithShortPause.txt
+echo "!EXIT sil" >> $OUT/dictionaryWithShortPause.txt
 
-#touch $OUT/phonesInSentencesConfiguration0
-#touch $OUT/phonesInSentencesConfiguration1
+echo ""
+echo " *** create a master label file manually, comparing phone and word file***"
+echo ""
 
-#echo "EX" >> $OUT/phonesInSentencesConfiguration0
-#echo "IS sil sil" >> $OUT/phonesInSentencesConfiguration0
-#echo "DE sp" >> $OUT/phonesInSentencesConfiguration0
+touch $OUT/phonesInSentencesConfiguration0.txt
+touch $OUT/phonesInSentencesConfiguration1.txt
 
-#echo "EX" >> $OUT/phonesInSentencesConfiguration1
-#echo "IS sil sil" >> $OUT/phonesInSentencesConfiguration1
+echo "EX" >> $OUT/phonesInSentencesConfiguration0.txt
+echo "IS sil sil" >> $OUT/phonesInSentencesConfiguration0.txt
+echo "DE sp" >> $OUT/phonesInSentencesConfiguration0.txt
+echo "" >> $OUT/phonesInSentencesConfiguration0.txt
 
-#HLEd -T 0 -X phn.txt -l '*' -d $OUT/dictionaryWithShortPause -i $OUT/phonesInTrainSentences0.txt $OUT/phonesInSentencesConfiguration0 $OUTList/wordsInTrainSentencesAURORA
+echo "EX" >> $OUT/phonesInSentencesConfiguration1.txt
+echo "IS sil sil" >> $OUT/phonesInSentencesConfiguration1.txt
+echo "" >> $OUT/phonesInSentencesConfiguration1.txt
+
+HLEd -A -D -T 1 -X phn.txt -l '*' -d $OUT/dictionaryWithShortPause.txt -i $OUT/phonesInTrainSentences0.txt $OUT/phonesInSentencesConfiguration0.txt $OUTList/wordsInTrainSentencesAURORA.txt
 
 #echo "" >> $OUT/phonesInTrainSentences0.txt
 
-#HLEd -T 0 -X phn.txt -l '*' -d $OUT/dictionaryWithShortPause -i $OUT/phonesInTrainSentences1.txt $OUT/phonesInSentencesConfiguration1 $OUTList/wordsInTrainSentencesAURORA
+HLEd -A -D -T 1 -X phn.txt -l '*' -d $OUT/dictionaryWithShortPause.txt -i $OUT/phonesInTrainSentences1.txt $OUT/phonesInSentencesConfiguration1.txt $OUTList/wordsInTrainSentencesAURORA.txt
 
 #echo "" >> $OUT/phonesInTrainSentences1.txt
 
-#falta los fones de los archivos de test
-# igual falta los fones de los archivos de test
+HLEd -A -D -T 1 -X phn.txt -l '*' -d $OUT/dictionaryWithShortPause.txt -i $OUT/phonesInTestSentences0.txt $OUT/phonesInSentencesConfiguration0.txt $OUTList/wordsInTestSentencesAURORA.txt
 
-# generating all posible triphonescombinations (and not only the ones in sentences)
+sed -i 's/.stc.phn.txt/.phn.txt/g' $OUT/phonesInTestSentences0.txt
+sed -i 's/.stc.phn.txt/.phn.txt/g' $OUT/phonesInTrainSentences1.txt
+sed -i 's/.stc.phn.txt/.phn.txt/g' $OUT/phonesInTrainSentences0.txt
 
-#echo "*** Generating all popsible triphones ***"
+#*************************************************************************************************************************************************************************************#
+#************************************ generating all posible triphonescombinations (and not only the ones in sentences) **************************************************************#
 
-#cp $OUT/monophones1 $OUT/triphonesAllCombinations.txt
 
-#./generateTriphones.py $OUT/monophones1 $OUT/triphonesAllCombinations.txt
+echo "*** Generating all popsible triphones ***"
+
+cp $OUT/monophones1.txt $OUT/triphonesAllCombinations.txt
+
+./generateTriphones.py $OUT/monophones1.txt $OUT/triphonesAllCombinations.txt
 
 touch $OUT/silenceConfiguration.txt
 
@@ -139,7 +144,7 @@ touch $OUT/modelCloneForTriphoneConfiguration.txt
 
 echo "CL $OUT/triphones1.txt" >> $OUT/modelCloneForTriphoneConfiguration.txt
 
-./confSilence.py $OUT/monophones1 $OUT/modelCloneForTriphoneConfiguration.txt
+./confSilence.py $OUT/monophones1.txt $OUT/modelCloneForTriphoneConfiguration.txt
 
 touch $OUT/mergeSpSilConfiguration.txt
 
@@ -160,6 +165,6 @@ fi
 
 echo "TC" >> $OUT/triphoneConfiguration.txt
 
-#rm -rf $OUT/*.tmp
+rm -rf $OUT/*.tmp
 
 # in case to restart the process the archives .txt.tmp into the folder reconhecedor_CETUC/productsDatabase/DatabaseAURORA/DatabaseComplete8kHz/Train must be deleted "rm -rf *.tmp"

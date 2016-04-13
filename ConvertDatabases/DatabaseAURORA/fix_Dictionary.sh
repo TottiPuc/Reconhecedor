@@ -11,47 +11,33 @@
 
 
 nameDatabase="AURORA"
-DictionaryPath=~/reconhecedor_CETUC/productsDatabase/Database$nameDatabase/ConvertDataBase$nameDatabase/CMU_dictionary/dictionary.txt
+DictionaryPath=~/reconhecedor_CETUC/productsDatabase/Database$nameDatabase/ConvertDataBase$nameDatabase/CMU_dictionary/dicWlist5c.txt
 SentencesPath=~/reconhecedor_CETUC/productsDatabase/Database$nameDatabase/ConvertDataBase$nameDatabase/trainList.txt
 resultPath=~/reconhecedor_CETUC/productsDatabase/Database"$nameDatabase"
 
+# clean files
+rm -f $resultPath/dictionary.txt $resultPath/monophones.txt $resultPath/questions.txt $resultPath/sentences.txt
+
+
 cat $DictionaryPath | 
 tr -d "\r" |
-sed '/;/d' |  
-sed "s/^'/\\\\'/g"|
-#sed "s/^'/\\\\\\\\\'/g"|
-sed -r '/simmer/ a simmered  s ih m axr d'|
+sed 's/\t/  /g'|
+sed '/#/d' |
+sed '/./!d'|
 sed 's/\///g'|
 sed 's/\.//g'|
 sed 's/1//g'|
 sed 's/2//g'|
-sed 's/~n//g'|
-sed 's/~v_past//g'|
-sed 's/~v_pres//g'|
-sed 's/~v//g'|
-sed 's/~adj//g'|
 sed 's/[1-9]//g'|
 sed 's/()//g' |
-sed -e '$a PHILIPPINES   F IH L IH P IY N Z' |
-sort | uniq > $resultPath/dic.tmp
-
-mv $resultPath/dic.tmp $resultPath/dictionary.txt
-
-echo ""
-echo "create new dictionary from phone transcriptions"
-echo ""
-
-cat $resultPath/dictionary.txt > $resultPath/dictionary2.tmp
-cat $resultPath/dictionary.txt | sed 's/$/ sil/g' >> $resultPath/dictionary2.tmp
-cat $resultPath/dictionary.txt | sed 's/$/ sp/g' >> $resultPath/dictionary2.tmp
-
-#echo "!SENT_START" >> $resultPath/dictionary2.tmp
-#echo "!SENT_END" >> $resultPath/dictionary2.tmp
-
-
-cat $resultPath/dictionary2.tmp |sort |uniq > $resultPath/dictionary2.txt
-
-
+sed -e '$a PHILIPPINES  F IH L IH P IY N Z' |
+sed -e '$a PHILIPS  F IH L AH P S' |
+sed -e '$a PURCHASING  P ER CH AH S IH NG' |
+sed -e '$a ROUTE  R AW T' |
+sed -e '$a ROUTE  R UW T' |
+sed -e '$a ROUTINE  R UW T IY N' |
+sed -e '$a ROVER  R OW V ER' |
+tr [[:upper:]] [[:lower:]] | sort | uniq > $resultPath/dictionary.txt
 
 echo ""
 echo "*** make monopones files (without short pauses) and questions file ***"
@@ -64,8 +50,7 @@ echo ""
 echo "*** fix sentences list  ***"
 echo ""
 
-cat $SentencesPath |
-sed "s/..................................$//g"|
+cat $SentencesPath | awk '{ $(NF)=""; print }' | awk '{ $(NF)=""; print }'|
 sed 's/\.//g' |
 sed 's/\?//g' |
 sed 's/{//g' |
@@ -79,16 +64,24 @@ sed 's/\;//g' |
 sed 's/\,//g' |
 sed 's/\"//g' |
 sed 's/\--//g' |
-sed "s/'em/\\\'em/g" |
-sed "s/(*)*//g" |
-#sed "s/ *$//g" |
-tr [[:upper:]] [[:lower:]] > $resultPath/sentences.txt
+sed 's/\-/ /g' |
+tr [[:upper:]] [[:lower:]] |
+sed "s/'a'/a/g" |
+sed "s/'chemical'/chemical/g" |
+sed "s/'come/come/g" |
+sed "s/settle'/settle/g" |
+sed "s/'eighty/eighty/g" |
+sed "s/'presented'/presented/g" |
+sed "s/'single/single/g" |
+sed "s/'the/the/g" |
+sed "s/man'/man/g" |
+sed "s/'what's/what's/g" |
+sed "s/stuff'/stuff/g" |
+sed "s/'up'/up/g" |
+sed "s/'yeah/yeah/g" |
+sed "s/wrong'/wrong/g" |
+sed "s/(*)*//g"  > $resultPath/sentences.txt
 
-#echo ""
-#echo "*** remove all temporal files *.tmp  ***"
-#echo ""
-
-#rm -rf $resultPath/*.tmp
 
 
 

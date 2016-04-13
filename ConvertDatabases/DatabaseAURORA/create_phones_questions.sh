@@ -33,14 +33,11 @@ if [ "$discar_strange_phones" -eq 1 ]; then
 	echo "m" >> $result/monophones.txt
 	echo "n" >> $result/monophones.txt
 	echo "ng" >> $result/monophones.txt
-	echo "em" >> $result/monophones.txt
-	echo "en" >> $result/monophones.txt
 	echo "l" >> $result/monophones.txt
 	echo "r" >> $result/monophones.txt
 	echo "w" >> $result/monophones.txt
 	echo "y" >> $result/monophones.txt
 	echo "hh" >> $result/monophones.txt
-	echo "el" >> $result/monophones.txt
 	echo "iy" >> $result/monophones.txt
 	echo "ih" >> $result/monophones.txt
 	echo "eh" >> $result/monophones.txt
@@ -56,10 +53,13 @@ if [ "$discar_strange_phones" -eq 1 ]; then
 	echo "uh" >> $result/monophones.txt
 	echo "uw" >> $result/monophones.txt
 	echo "er" >> $result/monophones.txt
-	echo "ax" >> $result/monophones.txt
-	echo "ix" >> $result/monophones.txt
-	echo "axr" >> $result/monophones.txt
 else
+	echo "el" >> $result/monophones.txt
+        echo "ax" >> $result/monophones.txt
+        echo "ix" >> $result/monophones.txt
+        echo "axr" >> $result/monophones.txt
+        echo "em" >> $result/monophones.txt
+        echo "en" >> $result/monophones.txt 
         echo "bcl" >> $result/monophones.txt
         echo "dcl" >> $result/monophones.txt
         echo "gcl" >> $result/monophones.txt
