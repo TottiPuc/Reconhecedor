@@ -13,10 +13,10 @@ clear
 
 ###############   main variables   ######################
 Database="TIMIT"
-Path_files=~/reconhecedor_CETUC/OriginalDataBases"$Database"
-PathProducts=~/reconhecedor_CETUC/productsDatabase/Database"$Database"/DatabaseComplet8KHz
-PathDictionary=~/reconhecedor_CETUC/productsDatabase/Database"$Database"
-sour=/home/christianlab/Documentos/Scripts_Reconhecedor/ConvertDatabases/DatabaseTIMIT
+Path_files=$1/OriginalDataBases"$Database"
+PathProducts=$1/productsDatabase/Database"$Database"/DatabaseComplet8KHz
+PathDictionary=$1/productsDatabase/Database"$Database"
+sour=$2/ConvertDatabases/DatabaseTIMIT
 decision="y"
 ##########################################################
 
@@ -57,7 +57,7 @@ echo ""
 echo "  ****** Copy some test samples to another folder, so we can make fast tests  ***** "
 echo "  ****** Creating a small-test folder  ***** "
 echo ""
-sh $sour/Script_Small_test.sh
+sh $sour/Script_Small_test.sh $PathProducts
 
 echo "database converted with sucesful"
 sleep 5s
@@ -75,7 +75,7 @@ echo ""
 echo "  ****** make dictionary, monophones and question files  ***** "
 echo ""
 
-sh $sour/fix_Dictionary.sh
+sh $sour/fix_Dictionary.sh $Path_files $PathDictionary $sour
 
 
 echo ""

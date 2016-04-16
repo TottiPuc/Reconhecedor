@@ -9,8 +9,8 @@
 #==============================================#
 ################################################
 
-IN=/home/christianlab/reconhecedor_CETUC/productsDatabase/DatabaseTIMIT/DatabaseComplet8KHz/smallTest
-OUT=/home/christianlab/reconhecedor_CETUC/products/htk/mfccTIMIT
+IN=$1/productsDatabase/DatabaseTIMIT/DatabaseComplet8KHz/smallTest
+OUT=$1/products/htk/mfccTIMIT
 
 #*********************************************************************************#
 #***  navigate through TIMIT folders and files to list them in config files   ***#

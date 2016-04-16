@@ -9,12 +9,12 @@
 #==============================================#
 ################################################
 
-OUTMODEL=/home/christianlab/reconhecedor_CETUC/products/htk/mfccAURORA/model
-INPHONE=/home/christianlab/reconhecedor_CETUC/products/htk/phonesAURORA
-IN=/home/christianlab/reconhecedor_CETUC/products/htk/mfccAURORA
-INHTK=/home/christianlab/reconhecedor_CETUC/products/htk/languageModel/AURORA
-DB=/home/christianlab/reconhecedor_CETUC/productsDatabase/DatabaseAURORA/DatabaseComplete8kHz/Test/
-RESULT=/home/christianlab/reconhecedor_CETUC/products/htk
+OUTMODEL=$1/products/htk/mfccAURORA/model
+INPHONE=$1/products/htk/phonesAURORA
+IN=$1/products/htk/mfccAURORA
+INHTK=$1/products/htk/languageModel/AURORA
+DB=$1/productsDatabase/DatabaseAURORA/DatabaseComplete8kHz/Test/
+RESULT=$1/products/htk
 
 TEST_PHONE_RECOGNITION=0
 USE_HVITE_FOR_WORDS=0     #otherwise, use HDecode (better, but slower)

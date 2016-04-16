@@ -13,8 +13,8 @@ clear
 
 ###############   main variables   ######################
 Database="TIMIT"
-PathProducts=~/reconhecedor_CETUC/productsDatabase/Database"$Database"/DatabaseComplet8KHz/Test
-testFolder=~/reconhecedor_CETUC/productsDatabase/Database"$Database"/DatabaseComplet8KHz/smallTest/
+PathProducts=$1/Test
+testFolder=$1/smallTest/
 start=1
 ##########################################################
 echo ""

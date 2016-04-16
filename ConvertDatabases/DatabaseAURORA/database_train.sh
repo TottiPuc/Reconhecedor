@@ -9,21 +9,23 @@
 #==============================================#
 ################################################
 
-pathTrainFile=/home/christianlab/reconhecedor_CETUC/productsDatabase/DatabaseAURORA/ConvertDataBaseAURORA/csr_1_senn_d2/11-13.1/wsj0/doc/indices/train/tr_s_wv1.ndx
-TrainFiles=/home/christianlab/reconhecedor_CETUC/productsDatabase/DatabaseAURORA/ConvertDataBaseAURORA/csr_1_senn_d1/
-pathTrainSource=~/reconhecedor_CETUC/productsDatabase/DatabaseAURORA/DatabaseComplete8kHz
-TrainRaw=~/reconhecedor_CETUC/productsDatabase/DatabaseAURORA/ConvertDataBaseAURORA
+pathTrainFile="$1"ConvertDataBaseAURORA/csr_1_senn_d2/11-13.1/wsj0/doc/indices/train/tr_s_wv1.ndx
+TrainFiles="$1"ConvertDataBaseAURORA/csr_1_senn_d1/
+pathTrainSource="$1"DatabaseComplete8kHz
+TrainRaw="$1"ConvertDataBaseAURORA
 
 if [ -d $pathTrainSource ]; then
 	rm -r $pathTrainSource
-	rm -r $TrainRaw/list.tmp $TrainRaw/promptx.tmp $TrainRaw/trainList.tmp $TrainRaw/trainList.txt
+	rm -r $TrainRaw/list.tmp $TrainRaw/promptx.tmp $TrainRaw/trainList.tmp $TrainRaw/trainList.txt  $TrainRaw/listTest.tmp $TrainRaw/promptxTest.tmp $TrainRaw/TestList.txt
+	echo "entro train"
+	sleep 2
 fi
 
 ##sentence=1
 mkdir -p $pathTrainSource/Train 
 
 # delete sentences adaptatives
-find /home/christianlab/reconhecedor_CETUC/productsDatabase/DatabaseAURORA/ConvertDataBaseAURORA/promp_train_si_tr_s/ -name *.ptx  | sed '/a0100/d' | while read line
+find "$1"ConvertDataBaseAURORA/promp_train_si_tr_s/ -name *.ptx  | sed '/a0100/d' | while read line
 do
 cat $line | sed '/./!d' >> $TrainRaw/promptx.tmp
 done

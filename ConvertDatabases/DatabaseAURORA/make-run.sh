@@ -13,8 +13,9 @@ clear
 
 ###############   main variables   ######################
 Database="AURORA"
-Path_files=/home/christianlab/reconhecedor_CETUC/OriginalDataBase"$Database"/
-Out=/home/christianlab/reconhecedor_CETUC/productsDatabase/DatabaseAURORA/
+Path_files=$1/OriginalDataBase"$Database"/
+Out=$1/productsDatabase/DatabaseAURORA/
+sour=$2/ConvertDatabases/DatabaseAURORA
 decision=Y
 
 echo "do you want overwrite the existing databasew Y/n?"
@@ -33,7 +34,7 @@ echo "."
 echo "start converting audios WV1 to wav"
 echo "."
 
-./script_ConvertDatabase.sh $Out/ConvertDataBaseAURORA/
+$sour/script_ConvertDatabase.sh $Out/ConvertDataBaseAURORA/
 
 echo "."
 echo "end of the process"
@@ -45,16 +46,16 @@ echo "creating sentences from database training "
 echo "."
 sleep 10
 
-./database_train.sh
+$sour/database_train.sh $Out
 
 echo "."
 echo "creating sentences from database test"
 echo "."
 
-./database_test.sh
+$sour/database_test.sh $Out
 
 echo "."
 echo "creating dictionary, monophones and fixing sentences for training"
 echo "."
 
-./fix_Dictionary.sh
+$sour/fix_Dictionary.sh $Out $sour

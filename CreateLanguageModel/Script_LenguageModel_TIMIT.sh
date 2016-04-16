@@ -12,10 +12,9 @@
 clear
 
 echo " .. Creating Language Model .. "
-LM=~/reconhecedor_CETUC/products/htk/languageModel/TIMIT
-DB=~/reconhecedor_CETUC/productsDatabase/DatabaseTIMIT
-sour=/home/christianlab/Documentos/Scripts_Reconhecedor/CreateLanguageModel
-mkdir -p  $LM
+LM=$1/products/htk/languageModel/TIMIT
+DB=$1/productsDatabase/DatabaseTIMIT
+sour=$2/CreateLanguageModel
 touch  $LM/LanguageModelParameters
 touch  $LM/wordMap
 touch  $LM/wordsOfDictionary

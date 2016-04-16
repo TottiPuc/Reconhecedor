@@ -11,8 +11,8 @@
 
 SAMPLE_RATE=8000
 
-IN=/home/christianlab/reconhecedor_CETUC/productsDatabase/DatabaseTIMIT/DatabaseComplet8KHz/Train
-OUT=/home/christianlab/reconhecedor_CETUC/products/htk/mfccTIMIT
+IN=$1/productsDatabase/DatabaseTIMIT/DatabaseComplet8KHz/Train
+OUT=$1/products/htk/mfccTIMIT
 
 
 #*********************************************************************************#

@@ -9,21 +9,16 @@
 #==============================================#
 ################################################
 
-pathTestFile=/home/christianlab/reconhecedor_CETUC/productsDatabase/DatabaseAURORA/ConvertDataBaseAURORA/csr_1_senn_d2/11-13.1/wsj0/doc/indices/test/nvp/si_et_05.ndx
-TestFiles=/home/christianlab/reconhecedor_CETUC/productsDatabase/DatabaseAURORA/ConvertDataBaseAURORA/csr_1_senn_d2/
-pathTestSource=~/reconhecedor_CETUC/productsDatabase/DatabaseAURORA/DatabaseComplete8kHz/Test
-TestRaw=~/reconhecedor_CETUC/productsDatabase/DatabaseAURORA/ConvertDataBaseAURORA
-
-if [ -d $pathTestSource ]; then
-	rm -r $pathTestSource/
-	rm -r $TestRaw/listTest.tmp $TestRaw/promptxTest.tmp $TestRaw/TestList.txt
-fi
+pathTestFile="$1"ConvertDataBaseAURORA/csr_1_senn_d2/11-13.1/wsj0/doc/indices/test/nvp/si_et_05.ndx
+TestFiles="$1"ConvertDataBaseAURORA/csr_1_senn_d2/
+pathTestSource="$1"DatabaseComplete8kHz/Test
+TestRaw="$1"ConvertDataBaseAURORA
 
 #sentence=1
 mkdir -p $pathTestSource
 
 # delete sentences adaptatives
-find /home/christianlab/reconhecedor_CETUC/productsDatabase/DatabaseAURORA/ConvertDataBaseAURORA/promp_test_nvp_si_et_05/ -name *.ptx  | while read line
+find "$1"ConvertDataBaseAURORA/promp_test_nvp_si_et_05/ -name "*.ptx"  | while read line
 do
 cat $line | sed '/./!d' >> $TestRaw/promptxTest.tmp
 done
@@ -43,7 +38,7 @@ cat $TestRaw/TestList.txt | grep $sentence > $pathTestSource/speaker"$speaker"_s
 #sentence=`expr $sentence + 1`
 done
 
-find $pathTestSource/ -name *.txt | while read line
+find $pathTestSource/ -name "*.txt" | while read line
 do
 sen=`echo $line | cut -d "/" -f 9 | sed 's/.txt//g'`
 cat $line | awk '{ $(NF)=""; print }' | awk '{ $(NF)=""; print }'|

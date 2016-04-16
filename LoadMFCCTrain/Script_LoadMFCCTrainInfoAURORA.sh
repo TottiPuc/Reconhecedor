@@ -11,8 +11,8 @@
 
 SAMPLE_RATE=8000
 
-IN=/home/christianlab/reconhecedor_CETUC/productsDatabase/DatabaseAURORA/DatabaseComplete8kHz/Train
-OUT=/home/christianlab/reconhecedor_CETUC/products/htk/mfccAURORA
+IN=$1/productsDatabase/DatabaseAURORA/DatabaseComplete8kHz/Train
+OUT=$1/products/htk/mfccAURORA
 
 
 #*********************************************************************************#

@@ -9,8 +9,8 @@
 #==============================================#
 ################################################
 
-IN=/home/christianlab/reconhecedor_CETUC/productsDatabase/DatabaseAURORA/DatabaseComplete8kHz/Test
-OUT=/home/christianlab/reconhecedor_CETUC/products/htk/mfccAURORA
+IN=$1/productsDatabase/DatabaseAURORA/DatabaseComplete8kHz/Test
+OUT=$1/products/htk/mfccAURORA
 
 #*********************************************************************************#
 #***  navigate through AURORA folders and files to list them in config files   ***#

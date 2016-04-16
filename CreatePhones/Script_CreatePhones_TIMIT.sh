@@ -16,10 +16,10 @@ USE_PHONE_FILES_FOR_TRANSCRIPTION=0
 
 echo " *** Making a monophones0 nad monophones1 files (without and with short pauses)****"
 
-DB=/home/christianlab/reconhecedor_CETUC/productsDatabase/DatabaseTIMIT
-OUT=/home/christianlab/reconhecedor_CETUC/products/htk/phonesTIMIT
-OUTList=/home/christianlab/reconhecedor_CETUC/products/htk
-sour=/home/christianlab/Documentos/Scripts_Reconhecedor/CreatePhones
+DB=$1/productsDatabase/DatabaseTIMIT
+OUT=$1/products/htk/phonesTIMIT
+OUTList=$1/products/htk
+sour=$2/CreatePhones
 
 #****************************************************************************************#
 #************ make monophones0 and monophones1 files from monphones file  ***************#
@@ -132,17 +132,19 @@ touch $OUT/phonesInSentencesConfiguration1.txt
 echo "EX" >> $OUT/phonesInSentencesConfiguration0.txt
 echo "IS sil sil" >> $OUT/phonesInSentencesConfiguration0.txt
 echo "DE sp" >> $OUT/phonesInSentencesConfiguration0.txt
+echo "" >> $OUT/phonesInSentencesConfiguration0.txt
 
 echo "EX" >> $OUT/phonesInSentencesConfiguration1.txt
 echo "IS sil sil" >> $OUT/phonesInSentencesConfiguration1.txt
+echo "" >> $OUT/phonesInSentencesConfiguration1.txt
 
 HLEd -T 0 -X phn.txt -l '*' -d $OUT/dictionaryWithShortPause.txt -i $OUT/phonesInTrainSentences0.tmp $OUT/phonesInSentencesConfiguration0.txt $OUTList/wordsInTrainSentencesTIMIT.txt
 
-echo "" >> $OUT/phonesInTrainSentences0.tmp
+#echo "" >> $OUT/phonesInTrainSentences0.tmp
 
 HLEd -T 0 -X phn.txt -l '*' -d $OUT/dictionaryWithShortPause.txt -i $OUT/phonesInTrainSentences1.tmp $OUT/phonesInSentencesConfiguration1.txt $OUTList/wordsInTrainSentencesTIMIT.txt
 
-echo "" >> $OUT/phonesInTrainSentences1.tmp
+#echo "" >> $OUT/phonesInTrainSentences1.tmp
 
 HLEd -T 0 -X phn.txt -l '*' -d $OUT/dictionaryWithShortPause.txt -i $OUT/phonesInTestSentences0.tmp $OUT/phonesInSentencesConfiguration0.txt $OUTList/wordsInTestSentencesTIMIT.txt
 

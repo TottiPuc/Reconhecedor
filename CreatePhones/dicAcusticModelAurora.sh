@@ -10,13 +10,15 @@
 ################################################
 
 IN=/home/christianlab/reconhecedor_CETUC/products/htk
-OUT=/home/christianlab/reconhecedor_CETUC/products/htk/phonesAURORA
+OUT=/home/christianlab/reconhecedor_CETUC/products/htk/phonesAURORA/dictionaryCMU
 
 #julia prompts2wlist.jl $IN/TrainSentencesAURORA.txt $OUT/dicAcusticModelAurora.tmp
+#julia prompts2wlist.jl $IN/TestSentencesAURORA.txt $OUT/dicAcusticModelAuroraTest.tmp
 
 #cat $OUT/dicAcusticModelAurora.tmp | sed '/./!d' > $OUT/dicAcusticModelAurora.txt
+#cat $OUT/dicAcusticModelAuroraTest.tmp | sed '/./!d' > $OUT/dicAcusticModelAuroraTest.txt
 
-# se tiene que hacer la transcripcion fonetica manualmente en DMU dictionary toolbox despues si fizar el diccionario
+# se tiene que hacer la transcripcion fonetica manualmente en CMU dictionary toolbox despues si fixar el diccionario que son las dos lineas comentadas arriba que da como resultado OUTList
 
 cat $OUT/dic_AM_AURORA.txt |
 tr -d "\r" |
@@ -39,7 +41,18 @@ sed -e '$a ROVER  R OW V ER' |
 tr [[:upper:]] [[:lower:]] | sort | uniq > $OUT/dictionaryAM.txt
 
 
-
+#cat $OUT/dic_AM_AURORATest.txt |
+#tr -d "\r" |
+#sed 's/\t/  /g'|
+#sed '/#/d' |
+#sed '/./!d'|
+#sed 's/\///g'|
+#sed 's/\.//g'|
+#sed 's/1//g'|
+#sed 's/2//g'|
+#sed 's/[1-9]//g'|
+#sed 's/()//g' |
+#tr [[:upper:]] [[:lower:]] | sort | uniq > $OUT/dictionaryAMTest.txt
 
 
 

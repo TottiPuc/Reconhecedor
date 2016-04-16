@@ -9,11 +9,11 @@
 #==============================================#
 ################################################
 
-IN=/home/christianlab/reconhecedor_CETUC/products/htk/mfccAURORA
-OUTMODEL=/home/christianlab/reconhecedor_CETUC/products/htk/mfccAURORA/model
-INPHONE=/home/christianlab/reconhecedor_CETUC/products/htk/phonesAURORA
-INHTK=/home/christianlab/reconhecedor_CETUC/products/htk
-DB=/home/christianlab/reconhecedor_CETUC/productsDatabase/DatabaseAURORA/DatabaseComplete8kHz/Train
+IN=$1/products/htk/mfccAURORA
+OUTMODEL=$1/products/htk/mfccAURORA/model
+INPHONE=$1/products/htk/phonesAURORA
+INHTK=$1/products/htk
+DB=$1/productsDatabase/DatabaseAURORA/DatabaseComplete8kHz/Train
 
 
 NUMBRE_OF_REESTIMATIONS_FOR_CICLE=3
@@ -48,12 +48,12 @@ done
 
 echo "*** Creating monophones models ***"
 
-touch $INHTK/warnings.txt
+touch $INHTK/warningsAURORA.txt
 
 for i in `seq 1 $NUMBRE_OF_REESTIMATIONS_FOR_CICLE`
 do
 echo "Re-estimation $i..."
-HERest -A -D -T 1 -X phn.txt -L $DB/ -C $IN/featureInfo.txt -I $INPHONE/phonesInTrainSentences0.txt -t 250.0 150.0 1500.0 -S $IN/trainFeaturesFiles.txt -H $OUTMODEL/hmm1_start/macros -H $OUTMODEL/hmm1_start/hmmdefs -M $OUTMODEL/hmm1_start/ $INPHONE/monophones0.txt >> $INHTK/warnings.txt 
+HERest -A -D -T 1 -X phn.txt -L $DB/ -C $IN/featureInfo.txt -I $INPHONE/phonesInTrainSentences0.txt -t 250.0 150.0 1500.0 -S $IN/trainFeaturesFiles.txt -H $OUTMODEL/hmm1_start/macros -H $OUTMODEL/hmm1_start/hmmdefs -M $OUTMODEL/hmm1_start/ $INPHONE/monophones0.txt >> $INHTK/warningsAURORA.txt 
 done
 
 #******** Fix the silence (add short pauses) and more reestimations *********#
@@ -111,13 +111,13 @@ elif [ "$line" == '~h "sil"' ]; then
 fi
 done
 
-HHEd -T 0 -H $OUTMODEL/hmm2_monophones/macros -H $OUTMODEL/hmm2_monophones/hmmdefs -M $OUTMODEL/hmm2_monophones/ $INPHONE/silenceConfiguration.txt $INPHONE/monophones1.txt >> $INHTK/warnings.txt
+HHEd -T 0 -H $OUTMODEL/hmm2_monophones/macros -H $OUTMODEL/hmm2_monophones/hmmdefs -M $OUTMODEL/hmm2_monophones/ $INPHONE/silenceConfiguration.txt $INPHONE/monophones1.txt >> $INHTK/warningsAURORA.txt
 
 
 for i in `seq 1 $NUMBRE_OF_REESTIMATIONS_FOR_CICLE`
 do
 echo "Re-estimation $i..."
-HERest -T 1 -X phn.txt -L $DB/ -C $IN/featureInfo.txt -I $INPHONE/phonesInTrainSentences1.txt -t 250.0 150.0 1500.0 -S $IN/trainFeaturesFiles.txt -H $OUTMODEL/hmm2_monophones/macros -H $OUTMODEL/hmm2_monophones/hmmdefs -M $OUTMODEL/hmm2_monophones/ $INPHONE/monophones1.txt >> $INHTK/warnings.txt
+HERest -T 1 -X phn.txt -L $DB/ -C $IN/featureInfo.txt -I $INPHONE/phonesInTrainSentences1.txt -t 250.0 150.0 1500.0 -S $IN/trainFeaturesFiles.txt -H $OUTMODEL/hmm2_monophones/macros -H $OUTMODEL/hmm2_monophones/hmmdefs -M $OUTMODEL/hmm2_monophones/ $INPHONE/monophones1.txt >> $INHTK/warningsAURORA.txt
 done
 
 #*****************************************************************************************************************************#
@@ -125,9 +125,9 @@ done
 
 echo "*** Making triphone models from monophone models***"
 
-HLEd -l '*' -X txt -n $INPHONE/triphones1.txt -i $INPHONE/triphonesInTrainSentences1.txt $INPHONE/triphoneConfiguration.txt $INPHONE/phonesInTrainSentences1.txt >> $INHTK/warnings.txt
+HLEd -l '*' -X txt -n $INPHONE/triphones1.txt -i $INPHONE/triphonesInTrainSentences1.txt $INPHONE/triphoneConfiguration.txt $INPHONE/phonesInTrainSentences1.txt >> $INHTK/warningsAURORA.txt
 
-HHEd -T 0 -B -H $OUTMODEL/hmm2_monophones/macros -H $OUTMODEL/hmm2_monophones/hmmdefs -M $OUTMODEL/hmm3_triphones/ $INPHONE/modelCloneForTriphoneConfiguration.txt $INPHONE/monophones1.txt >> $INHTK/warnings.txt
+HHEd -T 0 -B -H $OUTMODEL/hmm2_monophones/macros -H $OUTMODEL/hmm2_monophones/hmmdefs -M $OUTMODEL/hmm3_triphones/ $INPHONE/modelCloneForTriphoneConfiguration.txt $INPHONE/monophones1.txt >> $INHTK/warningsAURORA.txt
 
 for i in `seq 1 $NUMBRE_OF_REESTIMATIONS_FOR_CICLE`
 do
@@ -138,7 +138,7 @@ if [ $i -eq $NUMBRE_OF_REESTIMATIONS_FOR_CICLE ];then
 	extraParameter_str=$extraParameter_strls' -s '$IN/statsFile.txt
 fi
  
-HERest -T 0 -B -X phn.txt -L $DB/ $extraParameter_str -C $IN/featureInfo.txt -I $INPHONE/triphonesInTrainSentences1.txt -t 250.0 150.0 1500.0 -S $IN/trainFeaturesFiles.txt -H $OUTMODEL/hmm3_triphones/macros -H $OUTMODEL/hmm3_triphones/hmmdefs -M $OUTMODEL/hmm3_triphones/ $INPHONE/triphones1.txt >> $INHTK/warnings.txt
+HERest -T 0 -B -X phn.txt -L $DB/ $extraParameter_str -C $IN/featureInfo.txt -I $INPHONE/triphonesInTrainSentences1.txt -t 250.0 150.0 1500.0 -S $IN/trainFeaturesFiles.txt -H $OUTMODEL/hmm3_triphones/macros -H $OUTMODEL/hmm3_triphones/hmmdefs -M $OUTMODEL/hmm3_triphones/ $INPHONE/triphones1.txt >> $INHTK/warningsAURORA.txt
 done
 
 #************************************************************************************************************************#
@@ -150,7 +150,7 @@ touch $IN/tiedStateConfiguration.txt
 echo "RO 200 $IN/statsFile.txt" >> $IN/tiedStateConfiguration.txt
 echo "TR 0" >> $IN/tiedStateConfiguration.txt
 
-cat /home/christianlab/reconhecedor_CETUC/productsDatabase/DatabaseAURORA/questions.txt >> $IN/tiedStateConfiguration.txt
+cat $1/productsDatabase/DatabaseAURORA/questions.txt >> $IN/tiedStateConfiguration.txt
 
 
 cat $INPHONE/monophones1.txt | while read line
@@ -184,30 +184,30 @@ HHEd -T 0 -B -H $OUTMODEL/hmm3_triphones/macros -H $OUTMODEL/hmm3_triphones/hmmd
 for i in `seq 1 $NUMBRE_OF_REESTIMATIONS_FOR_CICLE`
 do
 echo "Re-estimation $i..."
-HERest -T 0 -B -X phn.txt -L $DB/ -C $IN/featureInfo.txt -I $INPHONE/triphonesInTrainSentences1.txt -t 250.0 150.0 1500.0 -S $IN/trainFeaturesFiles.txt -H $OUTMODEL/hmm3_triphones/macros -H $OUTMODEL/hmm3_triphones/hmmdefs -M $OUTMODEL/hmm3_triphones/ $IN/triphonesTied.txt >> $INHTK/warnings.txt
+HERest -T 0 -B -X phn.txt -L $DB/ -C $IN/featureInfo.txt -I $INPHONE/triphonesInTrainSentences1.txt -t 250.0 150.0 1500.0 -S $IN/trainFeaturesFiles.txt -H $OUTMODEL/hmm3_triphones/macros -H $OUTMODEL/hmm3_triphones/hmmdefs -M $OUTMODEL/hmm3_triphones/ $IN/triphonesTied.txt >> $INHTK/warningsAURORA.txt
 done
 
 #***********************************************************************************************************************#
 #****************************** Multistream gaussians (add mixture) for triphones *************************************#
 
-touch $INHTK/addMixtureConfiguration.txt
+touch $INHTK/addMixtureConfigurationAURORA.txt
 
 for i in `seq $MIN_MIXTURE_STEPS $MAX_MIXTURE_STEPS`
 do
 echo "*** Triphone Mixture $i... ***"
-echo "MU $i {*.state[2-4].mix}" >> $INHTK/addMixtureConfiguration.txt
+echo "MU $i {*.state[2-4].mix}" >> $INHTK/addMixtureConfigurationAURORA.txt
 
 if [ $i -eq 2 ];then
-	HHEd -T 0 -B -H $OUTMODEL/hmm3_triphones/macros -H $OUTMODEL/hmm3_triphones/hmmdefs -M $OUTMODEL/hmm4_triphonesMultistream/ $INHTK/addMixtureConfiguration.txt $IN/triphonesTied.txt >> $INHTK/warnings.txt
+	HHEd -T 0 -B -H $OUTMODEL/hmm3_triphones/macros -H $OUTMODEL/hmm3_triphones/hmmdefs -M $OUTMODEL/hmm4_triphonesMultistream/ $INHTK/addMixtureConfigurationAURORA.txt $IN/triphonesTied.txt >> $INHTK/warningsAURORA.txt
 
 else
-	HHEd -T 0 -B -H $OUTMODEL/hmm4_triphonesMultistream/macros -H $OUTMODEL/hmm4_triphonesMultistream/hmmdefs -M $OUTMODEL/hmm4_triphonesMultistream/ $INHTK/addMixtureConfiguration.txt $IN/triphonesTied.txt >> $INHTK/warnings.txt
+	HHEd -T 0 -B -H $OUTMODEL/hmm4_triphonesMultistream/macros -H $OUTMODEL/hmm4_triphonesMultistream/hmmdefs -M $OUTMODEL/hmm4_triphonesMultistream/ $INHTK/addMixtureConfigurationAURORA.txt $IN/triphonesTied.txt >> $INHTK/warningsAURORA.txt
 fi
 
 for j in `seq 1 $NUMBRE_OF_REESTIMATIONS_FOR_CICLE`
 do
 echo "Re-estimation $j..."
-HERest -T 0 -B -X phn.txt -L $DB/ -C $IN/featureInfo.txt -I $INPHONE/triphonesInTrainSentences1.txt -t 250.0 150.0 1500.0 -S $IN/trainFeaturesFiles.txt -H $OUTMODEL/hmm4_triphonesMultistream/macros -H $OUTMODEL/hmm4_triphonesMultistream/hmmdefs -M $OUTMODEL/hmm4_triphonesMultistream/ $IN/triphonesTied.txt >> $INHTK/warnings.txt
+HERest -T 0 -B -X phn.txt -L $DB/ -C $IN/featureInfo.txt -I $INPHONE/triphonesInTrainSentences1.txt -t 250.0 150.0 1500.0 -S $IN/trainFeaturesFiles.txt -H $OUTMODEL/hmm4_triphonesMultistream/macros -H $OUTMODEL/hmm4_triphonesMultistream/hmmdefs -M $OUTMODEL/hmm4_triphonesMultistream/ $IN/triphonesTied.txt >> $INHTK/warningsAURORA.txt
 done	
 
 

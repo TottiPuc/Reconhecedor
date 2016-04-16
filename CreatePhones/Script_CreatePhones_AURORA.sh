@@ -13,11 +13,12 @@ USE_CROSSWORD_TRIPHONE=0
 
 echo " *** Making a monophones0 nad monophones1 files (without and with short pauses)****"
 
-DB=/home/christianlab/reconhecedor_CETUC/productsDatabase/DatabaseAURORA
-OUT=/home/christianlab/reconhecedor_CETUC/products/htk/phonesAURORA
-OUTList=/home/christianlab/reconhecedor_CETUC/products/htk
+DB=$1/productsDatabase/DatabaseAURORA
+OUT=$1/products/htk/phonesAURORA
+OUTList=$1/products/htk
+sour=$2/CreatePhones
 
-rm -f $OUT/*.txt $OUTList/wordsInTrainSentencesAURORA.txt  $OUTList/wordsInTestSentencesAURORA.txt  $OUTList/TrainSentencesAURORA.txt $OUTList/TestSentencesAURORA.txt
+#rm -f $OUT/*.txt $OUTList/wordsInTrainSentencesAURORA.txt  $OUTList/wordsInTestSentencesAURORA.txt  $OUTList/TrainSentencesAURORA.txt $OUTList/TestSentencesAURORA.txt
 
 
 #****************************************************************************************#
@@ -41,7 +42,7 @@ echo "sp" >> $OUT/monophones1.txt
 touch $OUT/dictionaryForPhonesTest.txt
 touch $OUT/grammarPhones.txt
 
-./createPhones.py $OUT/monophones0.txt $OUT/dictionaryForPhonesTest.txt $OUT/grammarPhones.txt
+$sour/createPhones.py $OUT/monophones0.txt $OUT/dictionaryForPhonesTest.txt $OUT/grammarPhones.txt
 
 HParse $OUT/grammarPhones.txt $OUT/wordNetPhones.txt
 
@@ -87,11 +88,16 @@ echo " *** listing phones of /train/test sentences in MFL file***"
 echo ""
 
 touch $OUT/dictionaryWithShortPause.txt
-./dicAcusticModelAurora.sh
-cat $OUT/dictionaryAM.txt | sed 's/$/ sp/g' >> $OUT/dictionaryWithShortPause.txt
+touch $OUT/dictionaryWithShortPauseTest.txt
+#$sour/dicAcusticModelAurora.sh $OUTList     # run this script only if aurora AM dictionary hasn't been created
+cat $OUT/dictionaryCMU/dictionaryAM.txt | sed 's/$/ sp/g' >> $OUT/dictionaryWithShortPause.txt
+cat $OUT/dictionaryCMU/dictionaryAMTest.txt | sed 's/$/ sp/g' >> $OUT/dictionaryWithShortPauseTest.txt
 
 echo "!ENTER sil" >> $OUT/dictionaryWithShortPause.txt
 echo "!EXIT sil" >> $OUT/dictionaryWithShortPause.txt
+echo "!ENTER sil" >> $OUT/dictionaryWithShortPauseTest.txt
+echo "!EXIT sil" >> $OUT/dictionaryWithShortPauseTest.txt
+
 
 echo ""
 echo " *** create a master label file manually, comparing phone and word file***"
@@ -117,7 +123,7 @@ HLEd -A -D -T 1 -X phn.txt -l '*' -d $OUT/dictionaryWithShortPause.txt -i $OUT/p
 
 #echo "" >> $OUT/phonesInTrainSentences1.txt
 
-HLEd -A -D -T 1 -X phn.txt -l '*' -d $OUT/dictionaryWithShortPause.txt -i $OUT/phonesInTestSentences0.txt $OUT/phonesInSentencesConfiguration0.txt $OUTList/wordsInTestSentencesAURORA.txt
+HLEd -A -D -T 1 -X phn.txt -l '*' -d $OUT/dictionaryWithShortPauseTest.txt -i $OUT/phonesInTestSentences0.txt $OUT/phonesInSentencesConfiguration0.txt $OUTList/wordsInTestSentencesAURORA.txt
 
 sed -i 's/.stc.phn.txt/.phn.txt/g' $OUT/phonesInTestSentences0.txt
 sed -i 's/.stc.phn.txt/.phn.txt/g' $OUT/phonesInTrainSentences1.txt
@@ -131,7 +137,7 @@ echo "*** Generating all popsible triphones ***"
 
 cp $OUT/monophones1.txt $OUT/triphonesAllCombinations.txt
 
-./generateTriphones.py $OUT/monophones1.txt $OUT/triphonesAllCombinations.txt
+$sour/generateTriphones.py $OUT/monophones1.txt $OUT/triphonesAllCombinations.txt
 
 touch $OUT/silenceConfiguration.txt
 
@@ -144,7 +150,7 @@ touch $OUT/modelCloneForTriphoneConfiguration.txt
 
 echo "CL $OUT/triphones1.txt" >> $OUT/modelCloneForTriphoneConfiguration.txt
 
-./confSilence.py $OUT/monophones1.txt $OUT/modelCloneForTriphoneConfiguration.txt
+$sour/confSilence.py $OUT/monophones1.txt $OUT/modelCloneForTriphoneConfiguration.txt
 
 touch $OUT/mergeSpSilConfiguration.txt
 

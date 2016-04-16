@@ -11,10 +11,10 @@
 
 
 nameDatabase="TIMIT"
-DictionaryPath=~/reconhecedor_CETUC/OriginalDataBases$nameDatabase/Doc/TIMITDIC.TXT
-SentencesPath=~/reconhecedor_CETUC/OriginalDataBases$nameDatabase/Doc/PROMPTS.TXT
-resultPath=~/reconhecedor_CETUC/productsDatabase/Database"$nameDatabase"
-sour=/home/christianlab/Documentos/Scripts_Reconhecedor/ConvertDatabases/DatabaseTIMIT
+DictionaryPath=$1/Doc/TIMITDIC.TXT
+SentencesPath=$1/Doc/PROMPTS.TXT
+resultPath="$2"
+sour="$3"
 
 cat $DictionaryPath | 
 sed '/;/d' |  
@@ -63,7 +63,7 @@ echo "*** make monopones files (without short pauses) and questions file ***"
 echo ""
 
 touch $resultPath/monophones.txt $resultPath/questions.txt
-sh $sour/create_phones_questions.sh
+sh $sour/create_phones_questions.sh $resultPath
 
 echo ""
 echo "*** fix sentences list  ***"

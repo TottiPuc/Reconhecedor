@@ -9,7 +9,7 @@
 #==============================================#
 ################################################
 nameDatabase="AURORA"
-result=~/reconhecedor_CETUC/productsDatabase/Database"$nameDatabase"
+result=$1
 discar_strange_phones=1
 
 if [ "$discar_strange_phones" -eq 1 ]; then

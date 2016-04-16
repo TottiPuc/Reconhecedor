@@ -11,9 +11,10 @@
 
 
 nameDatabase="AURORA"
-DictionaryPath=~/reconhecedor_CETUC/productsDatabase/Database$nameDatabase/ConvertDataBase$nameDatabase/CMU_dictionary/dicWlist5c.txt
-SentencesPath=~/reconhecedor_CETUC/productsDatabase/Database$nameDatabase/ConvertDataBase$nameDatabase/trainList.txt
-resultPath=~/reconhecedor_CETUC/productsDatabase/Database"$nameDatabase"
+DictionaryPath="$1"ConvertDataBase$nameDatabase/CMU_dictionary/dicWlist5c.txt
+SentencesPath="$1"ConvertDataBase$nameDatabase/trainList.txt
+script=$2
+resultPath="$1"
 
 # clean files
 rm -f $resultPath/dictionary.txt $resultPath/monophones.txt $resultPath/questions.txt $resultPath/sentences.txt
@@ -44,7 +45,7 @@ echo "*** make monopones files (without short pauses) and questions file ***"
 echo ""
 
 touch $resultPath/monophones.txt $resultPath/questions.txt
-./create_phones_questions.sh
+$script/create_phones_questions.sh $resultPath
 
 echo ""
 echo "*** fix sentences list  ***"

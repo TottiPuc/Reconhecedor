@@ -9,11 +9,11 @@
 #==============================================#
 ################################################
 
-IN=/home/christianlab/reconhecedor_CETUC/products/htk/mfccTIMIT
-OUTMODEL=/home/christianlab/reconhecedor_CETUC/products/htk/mfccTIMIT/model
-INPHONE=/home/christianlab/reconhecedor_CETUC/products/htk/phonesTIMIT
-INHTK=/home/christianlab/reconhecedor_CETUC/products/htk
-DB=/home/christianlab/reconhecedor_CETUC/productsDatabase/DatabaseTIMIT/DatabaseComplet8KHz/Train
+IN=$1/products/htk/mfccTIMIT
+OUTMODEL=$1/products/htk/mfccTIMIT/model
+INPHONE=$1/products/htk/phonesTIMIT
+INHTK=$1/products/htk
+DB=$1/productsDatabase/DatabaseTIMIT/DatabaseComplet8KHz/Train
 
 
 NUMBRE_OF_REESTIMATIONS_FOR_CICLE=3
@@ -150,7 +150,7 @@ touch $IN/tiedStateConfiguration.txt
 echo "RO 200 $IN/statsFile.txt" >> $IN/tiedStateConfiguration.txt
 echo "TR 0" >> $IN/tiedStateConfiguration.txt
 
-cat /home/christianlab/reconhecedor_CETUC/productsDatabase/DatabaseTIMIT/questions.txt >> $IN/tiedStateConfiguration.txt
+cat $1/productsDatabase/DatabaseTIMIT/questions.txt >> $IN/tiedStateConfiguration.txt
 
 
 cat $INPHONE/monophones1.txt | while read line
