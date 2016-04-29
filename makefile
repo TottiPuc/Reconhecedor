@@ -2,6 +2,7 @@ SHELL:=/bin/bash
 #############################################################################################
 PATHSCRIPTS=`pwd`
 PATHPRODUCTOS=/home/christianlab/reconhecedor_CETUC
+PATHPRODUCTOSCORRUPTED=/home/christianlab/reconhecedor_CETUC/productsDatabase/DatabaseAURORA/DatabaseCorrupted8kHz/Test/
 #############################################################################################
 #****************************** products **************************************************#
 
@@ -167,6 +168,16 @@ loadMFCCTestAURORA:
 	@ $(MFCCTest)Script_LoadMFCCTestInfoAURORA.sh $(PATHPRODUCTOS)
 	@ touch $@
 
+loadMFCCTestAURORACorrupted:
+	@ echo "*** Clean MFCC test files ***"
+	@ rm $(PATHPRODUCTOS)/products/htk/mfccAURORA/testFeaturesFiles.txt
+	@ rm $(PATHPRODUCTOS)/products/htk/mfccAURORA/testWavAndFeaturesFiles.txt
+	@ rm $(PATHPRODUCTOS)/products/htk/mfccAURORA/HDecodeParameters.txt
+	@ rm $(PATHPRODUCTOS)/products/htk/mfccAURORA/featuresTest/*.feat
+	@ sleep 3
+	@ echo " Listing AURORA test data"
+	@ $(MFCCTest)Script_LoadMFCCTestInfoAURORAcorrupted.sh $(PATHPRODUCTOS) $(DATA) #$(PATHPRODUCTOSCORRUPTED)
+	@ touch $@
 
 ###################################################################################################
 #*********************************** train recognizer ********************************************#
@@ -233,15 +244,23 @@ htkTestTIMIT:
 	@$(HTKTRAIN)Script_TestHTK.sh  $(PATHPRODUCTOS)
 	@touch $@
 
-htkTestAURORA: 
+htkTestAURORAclean: 
 	@echo "*** Clean test files AURORA ***"
-	#@rm $(PATHPRODUCTOS)/products/htk/mfccAURORA/testResultsWords.txt
-	#@rm $(PATHPRODUCTOS)/products/htk/mfccAURORA/testRecognizedWords.txt
-	#@rm $(PATHPRODUCTOS)/products/htk/mfccAURORA/testRecognizedWords2.txt
+	@rm $(PATHPRODUCTOS)/products/htk/mfccAURORA/testResultsWords.txt
+	@rm $(PATHPRODUCTOS)/products/htk/mfccAURORA/testRecognizedWords.txt
+	@rm $(PATHPRODUCTOS)/products/htk/mfccAURORA/testRecognizedWords2.txt
 	@echo "*** evaluating results AURORA ***"
 	@$(HTKTRAIN)Script_TestHTK_AURORA.sh $(PATHPRODUCTOS) 
 	@touch $@
 
+htkTestAURORAcorrupted: 
+	@echo "*** Clean test files AURORA ***"
+	@rm $(PATHPRODUCTOS)/products/htk/mfccAURORA/testResultsWords.txt
+	@rm $(PATHPRODUCTOS)/products/htk/mfccAURORA/testRecognizedWords.txt
+	@rm $(PATHPRODUCTOS)/products/htk/mfccAURORA/testRecognizedWords2.txt
+	@echo "*** evaluating results AURORA ***"
+	@$(HTKTRAIN)Script_TestHTK_AURORACorrupted.sh $(PATHPRODUCTOS) $(DATA) #$(PATHPRODUCTOSCORRUPTED)
+	@touch $@
 
 
 
