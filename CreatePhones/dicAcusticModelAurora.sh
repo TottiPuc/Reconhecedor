@@ -9,8 +9,8 @@
 #==============================================#
 ################################################
 
-IN=/home/christianlab/reconhecedor_CETUC/products/htk
-OUT=/home/christianlab/reconhecedor_CETUC/products/htk/phonesAURORA/dictionaryCMU
+IN=~/reconhecedor_CETUC/products/htk
+OUT=~/reconhecedor_CETUC/products/htk/phonesAURORA/dictionaryCMU
 
 #julia prompts2wlist.jl $IN/TrainSentencesAURORA.txt $OUT/dicAcusticModelAurora.tmp
 #julia prompts2wlist.jl $IN/TestSentencesAURORA.txt $OUT/dicAcusticModelAuroraTest.tmp

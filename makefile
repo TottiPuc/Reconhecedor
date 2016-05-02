@@ -1,8 +1,8 @@
 SHELL:=/bin/bash
 #############################################################################################
 PATHSCRIPTS=`pwd`
-PATHPRODUCTOS=/home/christianlab/reconhecedor_CETUC
-PATHPRODUCTOSCORRUPTED=/home/christianlab/reconhecedor_CETUC/productsDatabase/DatabaseAURORA/DatabaseCorrupted8kHz/Test/
+PATHPRODUCTOS=~/reconhecedor_CETUC
+PATHPRODUCTOSCORRUPTED=~/reconhecedor_CETUC/productsDatabase/DatabaseAURORA/DatabaseCorrupted8kHz/Test/
 #############################################################################################
 #****************************** products **************************************************#
 
@@ -100,12 +100,12 @@ createPhoneTIMIT:
 
 createPhoneAURORA:
 	@ echo "*** clean phones files ***"
-	@ rm $(PHAURORA)
-	@ rm $(PATHPRODUCTOS)/products/htk/wordsInTrainSentencesAURORA.txt
-	@ rm $(PATHPRODUCTOS)/products/htk/TrainSentencesAURORA.txt
-	@ rm $(PATHPRODUCTOS)/products/htk/wordsInTestSentencesAURORA.txt
-	@ rm $(PATHPRODUCTOS)/products/htk/TestSentencesAURORA.txt
-	@ sleep 10
+	@ rm $(PHAURORA) || true
+	@ rm $(PATHPRODUCTOS)/products/htk/wordsInTrainSentencesAURORA.txt || true
+	@ rm $(PATHPRODUCTOS)/products/htk/TrainSentencesAURORA.txt || true
+	@ rm $(PATHPRODUCTOS)/products/htk/wordsInTestSentencesAURORA.txt || true
+	@ rm $(PATHPRODUCTOS)/products/htk/TestSentencesAURORA.txt || true
+	@ sleep 5
 	@ echo "make monophones"
 	@ $(PHN)Script_CreatePhones_AURORA.sh $(PATHPRODUCTOS) $(PATHSCRIPTS)
 	@ touch $@
@@ -129,13 +129,13 @@ loadMFCCTrainTIMIT:
 
 loadMFCCTrainAURORA:
 	@ echo "*** Clean MFCC train files ***"
-	@ rm $(PATHPRODUCTOS)/products/htk/mfccAURORA/proto.txt
-	@ rm $(PATHPRODUCTOS)/products/htk/mfccAURORA/featureInfo.txt
-	@ rm $(PATHPRODUCTOS)/products/htk/mfccAURORA/HCopyParametersForTrain.txt
-	@ rm $(PATHPRODUCTOS)/products/htk/mfccAURORA/trainFeaturesFiles.txt
-	@ rm $(PATHPRODUCTOS)/products/htk/mfccAURORA/trainWavAndFeaturesFiles.txt
-	@ rm $(PATHPRODUCTOS)/products/htk/mfccAURORA/featuresTrain/*.feat
-	@ sleep 10
+	@ rm $(PATHPRODUCTOS)/products/htk/mfccAURORA/proto.txt || true
+	@ rm $(PATHPRODUCTOS)/products/htk/mfccAURORA/featureInfo.txt || true
+	@ rm $(PATHPRODUCTOS)/products/htk/mfccAURORA/HCopyParametersForTrain.txt || true
+	@ rm $(PATHPRODUCTOS)/products/htk/mfccAURORA/trainFeaturesFiles.txt || true
+	@ rm $(PATHPRODUCTOS)/products/htk/mfccAURORA/trainWavAndFeaturesFiles.txt || true
+	@ rm $(PATHPRODUCTOS)/products/htk/mfccAURORA/featuresTrain/*.feat || true
+	@ sleep 5
 	@ echo " Listing AURORA train data"
 	@ $(MFCCTrain)Script_LoadMFCCTrainInfoAURORA.sh $(PATHPRODUCTOS)
 	@ touch $@
@@ -159,10 +159,10 @@ loadMFCCTestTIMIT:
 
 loadMFCCTestAURORA:
 	@ echo "*** Clean MFCC test files ***"
-	@ rm $(PATHPRODUCTOS)/products/htk/mfccAURORA/testFeaturesFiles.txt
-	@ rm $(PATHPRODUCTOS)/products/htk/mfccAURORA/testWavAndFeaturesFiles.txt
-	@ rm $(PATHPRODUCTOS)/products/htk/mfccAURORA/HDecodeParameters.txt
-	@ rm $(PATHPRODUCTOS)/products/htk/mfccAURORA/featuresTest/*.feat
+	@ rm $(PATHPRODUCTOS)/products/htk/mfccAURORA/testFeaturesFiles.txt || true
+	@ rm $(PATHPRODUCTOS)/products/htk/mfccAURORA/testWavAndFeaturesFiles.txt || true
+	@ rm $(PATHPRODUCTOS)/products/htk/mfccAURORA/HDecodeParameters.txt || true
+	@ rm $(PATHPRODUCTOS)/products/htk/mfccAURORA/featuresTest/*.feat || true
 	@ sleep 10
 	@ echo " Listing AURORA test data"
 	@ $(MFCCTest)Script_LoadMFCCTestInfoAURORA.sh $(PATHPRODUCTOS)
@@ -170,10 +170,10 @@ loadMFCCTestAURORA:
 
 loadMFCCTestAURORACorrupted:
 	@ echo "*** Clean MFCC test files ***"
-	@ rm $(PATHPRODUCTOS)/products/htk/mfccAURORA/testFeaturesFiles.txt
-	@ rm $(PATHPRODUCTOS)/products/htk/mfccAURORA/testWavAndFeaturesFiles.txt
-	@ rm $(PATHPRODUCTOS)/products/htk/mfccAURORA/HDecodeParameters.txt
-	@ rm $(PATHPRODUCTOS)/products/htk/mfccAURORA/featuresTest/*.feat
+	@ rm $(PATHPRODUCTOS)/products/htk/mfccAURORA/testFeaturesFiles.txt || true
+	@ rm $(PATHPRODUCTOS)/products/htk/mfccAURORA/testWavAndFeaturesFiles.txt || true
+	@ rm $(PATHPRODUCTOS)/products/htk/mfccAURORA/HDecodeParameters.txt || true
+	@ rm $(PATHPRODUCTOS)/products/htk/mfccAURORA/featuresTest/*.feat || true
 	@ sleep 3
 	@ echo " Listing AURORA test data"
 	@ $(MFCCTest)Script_LoadMFCCTestInfoAURORAcorrupted.sh $(PATHPRODUCTOS) $(DATA) #$(PATHPRODUCTOSCORRUPTED)
@@ -209,22 +209,22 @@ htkTrainTIMIT:
 
 htkTrainAURORA:
 	@echo "*** Clean training files ***"
-	@ rm $(PATHPRODUCTOS)/products/htk/mfccAURORA/model/hmm1_start/hmmdefs
-	@ rm $(PATHPRODUCTOS)/products/htk/mfccAURORA/model/hmm1_start/macros
-	@ rm $(PATHPRODUCTOS)/products/htk/mfccAURORA/model/hmm1_start/proto*
-	@ rm $(PATHPRODUCTOS)/products/htk/mfccAURORA/model/hmm1_start/vFloors
-	@ rm $(PATHPRODUCTOS)/products/htk/mfccAURORA/model/hmm2_monophones/hmmdefs
-	@ rm $(PATHPRODUCTOS)/products/htk/mfccAURORA/model/hmm2_monophones/macros
-	@ rm $(PATHPRODUCTOS)/products/htk/mfccAURORA/model/hmm3_triphones/hmmdefs
-	@ rm $(PATHPRODUCTOS)/products/htk/mfccAURORA/model/hmm3_triphones/macros
-	@ rm $(PATHPRODUCTOS)/products/htk/mfccAURORA/model/hmm4_triphonesMultistream/hmmdefs
-	@ rm $(PATHPRODUCTOS)/products/htk/mfccAURORA/model/hmm4_triphonesMultistream/macros
-	@ rm $(PATHPRODUCTOS)/products/htk/mfccAURORA/trees.txt
-	@ rm $(PATHPRODUCTOS)/products/htk/mfccAURORA/triphonesTied.txt
-	@ rm $(PATHPRODUCTOS)/products/htk/mfccAURORA/tiedStateConfiguration.txt
-	@ rm $(PATHPRODUCTOS)/products/htk/mfccAURORA/statsFile.txt
-	@ rm $(PATHPRODUCTOS)/products/htk/warningsAURORA.txt
-	@ rm $(PATHPRODUCTOS)/products/htk/addMixtureConfigurationAURORA.txt
+	@ rm $(PATHPRODUCTOS)/products/htk/mfccAURORA/model/hmm1_start/hmmdefs || true
+	@ rm $(PATHPRODUCTOS)/products/htk/mfccAURORA/model/hmm1_start/macros || true
+	@ rm $(PATHPRODUCTOS)/products/htk/mfccAURORA/model/hmm1_start/proto* || true
+	@ rm $(PATHPRODUCTOS)/products/htk/mfccAURORA/model/hmm1_start/vFloors || true
+	@ rm $(PATHPRODUCTOS)/products/htk/mfccAURORA/model/hmm2_monophones/hmmdefs || true
+	@ rm $(PATHPRODUCTOS)/products/htk/mfccAURORA/model/hmm2_monophones/macros || true
+	@ rm $(PATHPRODUCTOS)/products/htk/mfccAURORA/model/hmm3_triphones/hmmdefs || true
+	@ rm $(PATHPRODUCTOS)/products/htk/mfccAURORA/model/hmm3_triphones/macros || true
+	@ rm $(PATHPRODUCTOS)/products/htk/mfccAURORA/model/hmm4_triphonesMultistream/hmmdefs || true
+	@ rm $(PATHPRODUCTOS)/products/htk/mfccAURORA/model/hmm4_triphonesMultistream/macros || true
+	@ rm $(PATHPRODUCTOS)/products/htk/mfccAURORA/trees.txt || true
+	@ rm $(PATHPRODUCTOS)/products/htk/mfccAURORA/triphonesTied.txt || true
+	@ rm $(PATHPRODUCTOS)/products/htk/mfccAURORA/tiedStateConfiguration.txt || true
+	@ rm $(PATHPRODUCTOS)/products/htk/mfccAURORA/statsFile.txt || true
+	@ rm $(PATHPRODUCTOS)/products/htk/warningsAURORA.txt || true
+	@ rm $(PATHPRODUCTOS)/products/htk/addMixtureConfigurationAURORA.txt || true
 	@ rm $(PATHPRODUCTOS)/products/htk/phonesAURORA/triphones1.txt || true
 	@ rm $(PATHPRODUCTOS)/products/htk/phonesAURORA/triphonesInTrainSentences1.txt || true
 	@ rm $(PATHPRODUCTOS)/products/htk/phonesAURORA/tiedLog.txt || true
@@ -246,18 +246,18 @@ htkTestTIMIT:
 
 htkTestAURORAclean: 
 	@echo "*** Clean test files AURORA ***"
-	@rm $(PATHPRODUCTOS)/products/htk/mfccAURORA/testResultsWords.txt
-	@rm $(PATHPRODUCTOS)/products/htk/mfccAURORA/testRecognizedWords.txt
-	@rm $(PATHPRODUCTOS)/products/htk/mfccAURORA/testRecognizedWords2.txt
+	@rm $(PATHPRODUCTOS)/products/htk/mfccAURORA/testResultsWords.txt || true
+	@rm $(PATHPRODUCTOS)/products/htk/mfccAURORA/testRecognizedWords.txt || true
+	@rm $(PATHPRODUCTOS)/products/htk/mfccAURORA/testRecognizedWords2.txt || true
 	@echo "*** evaluating results AURORA ***"
 	@$(HTKTRAIN)Script_TestHTK_AURORA.sh $(PATHPRODUCTOS) 
 	@touch $@
 
 htkTestAURORAcorrupted: 
 	@echo "*** Clean test files AURORA ***"
-	@rm $(PATHPRODUCTOS)/products/htk/mfccAURORA/testResultsWords.txt
-	@rm $(PATHPRODUCTOS)/products/htk/mfccAURORA/testRecognizedWords.txt
-	@rm $(PATHPRODUCTOS)/products/htk/mfccAURORA/testRecognizedWords2.txt
+	@rm $(PATHPRODUCTOS)/products/htk/mfccAURORA/testResultsWords.txt || true
+	@rm $(PATHPRODUCTOS)/products/htk/mfccAURORA/testRecognizedWords.txt || true
+	@rm $(PATHPRODUCTOS)/products/htk/mfccAURORA/testRecognizedWords2.txt || true
 	@echo "*** evaluating results AURORA ***"
 	@$(HTKTRAIN)Script_TestHTK_AURORACorrupted.sh $(PATHPRODUCTOS) $(DATA) #$(PATHPRODUCTOSCORRUPTED)
 	@touch $@
