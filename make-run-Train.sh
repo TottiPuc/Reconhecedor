@@ -1,18 +1,23 @@
 #!/bin/bash
+#put in resultfolder the name you want, for your destination folder results ex. recognizer
+resultfolder=reconecedor1
 
+path=`pwd`
+
+rm -r $path/createLMAURORA $path/createPhoneAURORA $path/loadMFCCTrainAURORA $path/htkTrainAURORA 
 
 echo "creating language model"
 
-make createLMAURORA 
+make FOLDEROUT=$resultfolder createLMAURORA 
 
 echo "making phones"
 
-make createPhoneAURORA
+make FOLDEROUT=$resultfolder createPhoneAURORA
 
 echo "getting MFCC attributes"
 
-make loadMFCCTrainAURORA
+make FOLDEROUT=$resultfolder loadMFCCTrainAURORA
 
 echo "Training speech recognizer"
 
-make htkTrainAURORA
+make FOLDEROUT=$resultfolder htkTrainAURORA

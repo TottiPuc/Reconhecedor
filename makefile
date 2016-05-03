@@ -1,8 +1,8 @@
 SHELL:=/bin/bash
 #############################################################################################
 PATHSCRIPTS=`pwd`
-PATHPRODUCTOS=~/reconhecedor_CETUC
-PATHPRODUCTOSCORRUPTED=~/reconhecedor_CETUC/productsDatabase/DatabaseAURORA/DatabaseCorrupted8kHz/Test/
+PATHPRODUCTOS=~/$(FOLDEROUT)
+PATHPRODUCTOSCORRUPTED=~/$(FOLDEROUT)/productsDatabase/DatabaseAURORA/DatabaseCorrupted8kHz/Test/
 #############################################################################################
 #****************************** products **************************************************#
 
